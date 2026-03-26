@@ -20,9 +20,10 @@ export default async function ProductDetailPage({ params }) {
           <div className="grid grid-cols-12 gap-4">
             <div className="relative col-span-12 aspect-[4/5] overflow-hidden rounded-2xl bg-surface-container-low">
               <img
-                className="h-full w-full object-contain p-6"
+                className="h-full w-full object-cover"
                 src={product.image}
                 alt={product.name}
+                style={{ objectPosition: product.imagePosition || "center" }}
               />
               {product.badge && (
                 <div className="absolute left-4 top-4">

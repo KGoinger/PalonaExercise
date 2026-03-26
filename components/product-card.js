@@ -3,11 +3,12 @@ import Link from "next/link";
 export default function ProductCard({ product }) {
   return (
     <div className="group min-w-[220px] overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-lowest transition-all duration-300 hover:bg-surface-bright">
-      <div className="relative aspect-[4/5] overflow-hidden bg-surface-container-low">
+      <div className="relative aspect-[4/5] overflow-hidden">
         <img
-          className="h-full w-full object-contain p-3 transition-transform duration-500 group-hover:scale-105"
+          className="h-full w-full object-cover transition-transform duration-500 group-hover:scale-110"
           src={product.image}
           alt={product.name}
+          style={{ objectPosition: product.imagePosition || "center" }}
         />
         {product.badge && (
           <div className="absolute left-3 top-3 rounded-md bg-secondary-container px-2 py-1 text-[10px] font-bold uppercase tracking-wider text-on-secondary-container">

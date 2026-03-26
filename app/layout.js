@@ -1,8 +1,10 @@
 import "./globals.css";
+import SiteDisclaimer from "../components/site-disclaimer";
 
 export const metadata = {
-  title: "Curator AI - Personalized Style Agent",
-  description: "Prototype migrated to Next.js App Router",
+  title: "Curator AI - AI Agent for Commerce Website",
+  description:
+    "Take-home exercise prototype: one agent for chat, product recommendation, and image-based product search.",
 };
 
 export default function RootLayout({ children }) {
@@ -21,7 +23,10 @@ export default function RootLayout({ children }) {
       <body
         className="bg-surface font-body text-on-surface selection:bg-primary-container selection:text-on-primary-container"
       >
-        {children}
+        <div className="flex min-h-screen flex-col">
+          <div className="flex-1">{children}</div>
+          <SiteDisclaimer />
+        </div>
       </body>
     </html>
   );

@@ -17,7 +17,7 @@ export default function TopNavBar() {
 
   return (
     <header className="fixed top-0 z-50 w-full bg-[#fbf9f8] dark:bg-slate-950">
-      <nav className="mx-auto flex w-full max-w-7xl items-center justify-between px-6 py-4">
+      <nav className="mx-auto flex w-full max-w-7xl items-center px-6 py-4">
         <div className="flex items-center gap-8">
           <Link
             href="/"
@@ -33,20 +33,6 @@ export default function TopNavBar() {
               My Agent
             </Link>
           </div>
-        </div>
-        <div className="flex items-center gap-4">
-          <button
-            type="button"
-            className="rounded-full p-2 transition-colors hover:bg-[#f5f3f3]"
-          >
-            <span className="material-symbols-outlined">shopping_bag</span>
-          </button>
-          <button
-            type="button"
-            className="rounded-full p-2 transition-colors hover:bg-[#f5f3f3]"
-          >
-            <span className="material-symbols-outlined">account_circle</span>
-          </button>
         </div>
       </nav>
     </header>

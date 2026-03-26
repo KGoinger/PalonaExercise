@@ -12,7 +12,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy", "White"],
     image:
-      "/images/products/aero-mesh-tech-tee.svg",
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
     badge: "Top Pick",
   },
   {
@@ -28,7 +28,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Charcoal", "Olive", "Storm Blue"],
     image:
-      "/images/products/stealth-run-crew.svg",
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
     badge: null,
   },
   {
@@ -44,7 +44,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Glacier White", "Deep Teal"],
     image:
-      "/images/products/apex-aero-wick-tee.svg",
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIILy1whUWcZQJDYJ10nsji5BP2t4fK_48Pbo5litFzw4uEi6Qk8iH2gCd6Zt5liV8BrMrYFmTqFT3Ymwh4QV7dpfSv7EN1EL2fURiR-lb3JP3K1nuz0LBJeN5ruP226MuouqG6t_aQA6_0Vw-BoZuNaDxI4_uN09xxaZOdpibvwpEA9ECQ6ur6E0aUfxONzdGBQeQx8ujI4n2drsmprM4DX5yaHQVFRZMY7JBgZOsZAnJmkqaECWcymjibddqrxcKIF0q3aPPrrk",
     badge: "Best Seller",
   },
   {
@@ -60,7 +60,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["White", "Navy", "Light Grey"],
     image:
-      "/images/products/urban-flex-polo.svg",
+      "https://live.staticflickr.com/65535/53061394844_588c539b9c_b.jpg",
     badge: null,
   },
   {
@@ -76,7 +76,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Charcoal"],
     image:
-      "/images/products/thermal-base-layer.svg",
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
     badge: null,
   },
   {
@@ -92,7 +92,8 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy", "Forest Green"],
     image:
-      "/images/products/stride-flex-shorts.svg",
+      "https://images.unsplash.com/photo-1695918425801-41dd27ed8277?auto=format&fit=crop&w=1200&q=80",
+    imagePosition: "center 78%",
     badge: null,
   },
   {
@@ -108,7 +109,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Dark Grey"],
     image:
-      "/images/products/marathon-tight.svg",
+      "https://images.unsplash.com/photo-1641808895412-8d0464f08e02?auto=format&fit=crop&w=1200&q=80",
     badge: null,
   },
   {
@@ -124,7 +125,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Heather Grey", "Black", "Navy"],
     image:
-      "/images/products/weekend-jogger.svg",
+      "https://images.unsplash.com/photo-1552904219-f4b87efe8792?auto=format&fit=crop&w=1200&q=80",
     badge: null,
   },
   {
@@ -140,7 +141,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["White/Grey", "Black/Volt", "Navy/Orange"],
     image:
-      "/images/products/cloudstrike-runner.svg",
+      "https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=1200&q=80",
     badge: "Best Seller",
   },
   {
@@ -156,7 +157,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["Rust/Brown", "Black/Green"],
     image:
-      "/images/products/trailblazer-gtx.svg",
+      "https://upload.wikimedia.org/wikipedia/commons/a/ab/Trail_running_shoe.jpg",
     badge: null,
   },
   {
@@ -172,7 +173,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["Neon Yellow", "White/Red"],
     image:
-      "/images/products/tempo-racer-flat.svg",
+      "https://images.unsplash.com/photo-1587211592296-cd271582b620?auto=format&fit=crop&w=1200&q=80",
     badge: "New",
   },
   {
@@ -188,7 +189,7 @@ export const products = [
     sizes: ["One Size"],
     colors: ["White", "Black", "Navy"],
     image:
-      "/images/products/performance-cap.svg",
+      "https://live.staticflickr.com/7280/7425491492_76921aac21_b.jpg",
     badge: null,
   },
   {
@@ -204,7 +205,7 @@ export const products = [
     sizes: ["S/M", "L/XL"],
     colors: ["Neon Yellow", "Neon Orange"],
     image:
-      "/images/products/reflective-vest.svg",
+      "https://live.staticflickr.com/4027/4631632682_6f93f569aa_b.jpg",
     badge: null,
   },
   {
@@ -220,7 +221,7 @@ export const products = [
     sizes: ["One Size"],
     colors: ["Black", "Grey"],
     image:
-      "/images/products/hydration-belt.svg",
+      "https://live.staticflickr.com/2740/5712099459_cf0c859786_b.jpg",
     badge: null,
   },
   {
@@ -236,7 +237,7 @@ export const products = [
     sizes: ["S", "M", "L"],
     colors: ["Black", "White", "Grey"],
     image:
-      "/images/products/compression-socks.svg",
+      "https://images.unsplash.com/photo-1631180543602-727e1197619d?auto=format&fit=crop&w=1200&q=80",
     badge: null,
   },
 ];

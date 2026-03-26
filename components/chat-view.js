@@ -82,7 +82,6 @@ export default function ChatView() {
                 {[
                   "Recommend a running outfit",
                   "I need trail running shoes",
-                  "What's good for cold weather?",
                 ].map((suggestion) => (
                   <button
                     key={suggestion}

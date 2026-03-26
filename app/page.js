@@ -16,23 +16,28 @@ export default function LandingPage() {
               auto_awesome
             </span>
             <span className="text-xs font-bold uppercase tracking-widest text-on-surface-variant">
-              Personalized Commerce Agent
+              Take-Home Exercise Prototype
             </span>
           </div>
-          <h1 className="font-headline text-5xl font-extrabold leading-[1.1] tracking-tighter text-on-surface md:text-7xl">
-            Your closet, <br />
-            <span className="italic text-primary">reimagined</span> by AI.
+          <h1 className="font-headline text-[2.8rem] font-extrabold leading-[0.96] tracking-[-0.03em] text-on-surface sm:text-6xl md:text-[6.1rem]">
+            <span className="block">AI Agent for a</span>
+            <span className="block bg-gradient-to-r from-primary via-[#00789f] to-primary-container bg-clip-text text-transparent">
+              Commerce Website
+            </span>
           </h1>
           <p className="mx-auto max-w-2xl font-body text-lg text-on-surface-variant md:text-xl">
-            Curator AI understands your taste, finds the perfect fit, and helps
-            you build a wardrobe that actually works for you.
+            One unified assistant for general conversation, text-based product
+            recommendation, and image-based product search over a predefined
+            catalog.
           </p>
         </section>
 
-        <section className="mb-16 grid w-full grid-cols-1 gap-6 md:grid-cols-3">
-          <div className="group relative flex min-h-[320px] flex-col justify-between overflow-hidden rounded-[2rem] border border-outline-variant/10 bg-surface-container-lowest p-8 shadow-sm md:col-span-2">
+        <section className="mb-16 grid w-full grid-cols-1 gap-6 md:auto-rows-fr md:grid-cols-3">
+          <div className="landing-feature-card landing-reveal group relative flex h-full min-h-[320px] flex-col justify-between overflow-hidden rounded-[2rem] p-8 md:col-span-2">
+            <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
+            <div className="pointer-events-none absolute -bottom-20 -left-12 h-48 w-48 rounded-full bg-white/60 blur-2xl" />
             <div className="relative z-10">
-              <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/10">
+              <div className="landing-icon-float mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-primary/15 ring-1 ring-primary/15">
                 <span
                   className="material-symbols-outlined text-primary"
                   style={{ fontVariationSettings: "'FILL' 1" }}
@@ -49,15 +54,16 @@ export default function LandingPage() {
                 favorite vintage pair."
               </p>
             </div>
-            <div className="absolute bottom-[-20px] right-[-20px] opacity-10 transition-opacity group-hover:opacity-20">
-              <span className="material-symbols-outlined text-[200px]">
+            <div className="pointer-events-none absolute bottom-[-12px] right-[-12px] opacity-[0.08] transition-opacity duration-500 group-hover:opacity-[0.16]">
+              <span className="material-symbols-outlined text-[180px]">
                 forum
               </span>
             </div>
           </div>
 
-          <div className="flex min-h-[320px] flex-col rounded-[2rem] border border-outline-variant/10 bg-surface-container-low p-8">
-            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/10">
+          <div className="landing-feature-card landing-reveal landing-reveal-delay-1 relative flex h-full min-h-[320px] flex-col overflow-hidden rounded-[2rem] p-8">
+            <div className="pointer-events-none absolute -right-14 -top-12 h-44 w-44 rounded-full bg-secondary/10 blur-3xl" />
+            <div className="mb-6 flex h-12 w-12 items-center justify-center rounded-2xl bg-secondary/12 ring-1 ring-secondary/15">
               <span
                 className="material-symbols-outlined text-secondary"
                 style={{ fontVariationSettings: "'FILL' 1" }}
@@ -72,15 +78,6 @@ export default function LandingPage() {
               Saw something you loved? Take a photo or upload a screenshot to
               find the exact item.
             </p>
-            <div className="mt-auto pt-6">
-              <div className="h-24 w-full overflow-hidden rounded-xl bg-surface-container-high">
-                <img
-                  className="h-full w-full object-cover"
-                  src="https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY"
-                  alt="Visual search"
-                />
-              </div>
-            </div>
           </div>
         </section>
 

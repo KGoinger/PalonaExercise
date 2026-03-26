@@ -2,6 +2,16 @@
 
 import ProductCard from "./product-card";
 
+function dedupeProductsById(products) {
+  const seen = new Set();
+  return products.filter((product) => {
+    if (!product?.id) return true;
+    if (seen.has(product.id)) return false;
+    seen.add(product.id);
+    return true;
+  });
+}
+
 export default function ChatMessage({ message }) {
   const parts = message.parts || [];
   const fallbackRecommendationText = (products) => {
@@ -46,14 +56,16 @@ export default function ChatMessage({ message }) {
     .map((p) => p.text)
     .join("");
 
-  const toolProducts = parts
-    .filter(
-      (p) =>
-        p.type === "tool-search_products" &&
-        p.state === "output-available" &&
-        Array.isArray(p.output?.products)
-    )
-    .flatMap((p) => p.output.products);
+  const toolProducts = dedupeProductsById(
+    parts
+      .filter(
+        (p) =>
+          p.type === "tool-search_products" &&
+          p.state === "output-available" &&
+          Array.isArray(p.output?.products)
+      )
+      .flatMap((p) => p.output.products)
+  );
 
   return (
     <div className="flex flex-col items-start gap-4">

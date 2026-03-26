@@ -13,15 +13,27 @@ function getMessageText(message) {
     .join("");
 }
 
+function dedupeProductsById(products) {
+  const seen = new Set();
+  return products.filter((product) => {
+    if (!product?.id) return true;
+    if (seen.has(product.id)) return false;
+    seen.add(product.id);
+    return true;
+  });
+}
+
 function getToolProducts(message) {
-  return (message.parts || [])
-    .filter(
-      (part) =>
-        part.type === "tool-search_products" &&
-        part.state === "output-available" &&
-        Array.isArray(part.output?.products)
-    )
-    .flatMap((part) => part.output.products);
+  return dedupeProductsById(
+    (message.parts || [])
+      .filter(
+        (part) =>
+          part.type === "tool-search_products" &&
+          part.state === "output-available" &&
+          Array.isArray(part.output?.products)
+      )
+      .flatMap((part) => part.output.products)
+  );
 }
 
 function getFallbackRecommendationText(products) {
