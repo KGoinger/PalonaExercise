@@ -5,6 +5,7 @@ import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import ProductCard from "./product-card";
 import MarkdownContent from "./markdown-content";
+import ImageUploadButton from "./image-upload-button";
 
 function getMessageText(message) {
   return (message.parts || [])
@@ -13,13 +14,15 @@ function getMessageText(message) {
     .join("");
 }
 
-function getPreviousUserQuestion(messages, index) {
+function getPreviousUserContext(messages, index) {
   for (let i = index - 1; i >= 0; i -= 1) {
     if (messages[i]?.role === "user") {
-      return getMessageText(messages[i]);
+      const text = getMessageText(messages[i]);
+      const hasImage = (messages[i].parts || []).some((part) => part.type === "file");
+      return { text, hasImage };
     }
   }
-  return "";
+  return { text: "", hasImage: false };
 }
 
 function dedupeProductsById(products) {
@@ -91,23 +94,41 @@ function isComparisonIntent(text) {
   );
 }
 
+function filterProductsForCurrentContext(products, options = {}) {
+  const { currentProduct, userQuestion, hasImage } = options;
+  if (!currentProduct) return products;
+
+  if (hasImage || isComparisonIntent(userQuestion)) {
+    const sameCategory = products.filter(
+      (product) => product?.category === currentProduct.category
+    );
+    if (sameCategory.length > 0) return sameCategory;
+  }
+
+  return products;
+}
+
 function getFallbackRecommendationText(products, options = {}) {
-  const { currentProduct, userQuestion } = options;
+  const { currentProduct, userQuestion, hasImage } = options;
 
   if (!products.length) {
     return "I couldn't confidently map this image to catalog items yet. Please try a more specific prompt such as \"find similar running tees\" or \"show tops like this\".";
   }
 
-  if (currentProduct && isComparisonIntent(userQuestion)) {
+  if (currentProduct && (isComparisonIntent(userQuestion) || hasImage)) {
     const alternatives = products
       .filter((product) => product.id !== currentProduct.id)
       .slice(0, 3);
 
     if (alternatives.length > 0) {
       const lines = [
-        `I compared **${currentProduct.name}** (${formatPrice(
-          currentProduct.price
-        )}) with similar options from the catalog:`,
+        hasImage
+          ? `I analyzed your image against **${currentProduct.name}** (${formatPrice(
+              currentProduct.price
+            )}) and compared it with similar options in the same category:`
+          : `I compared **${currentProduct.name}** (${formatPrice(
+              currentProduct.price
+            )}) with similar options from the catalog:`,
         "",
       ];
 
@@ -152,6 +173,7 @@ function getFallbackRecommendationText(products, options = {}) {
 
 export default function ProductAskCurator({ product }) {
   const [input, setInput] = useState("");
+  const [pendingImage, setPendingImage] = useState(null);
   const [hasHydrated, setHasHydrated] = useState(false);
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
@@ -176,9 +198,27 @@ export default function ProductAskCurator({ product }) {
   function handleSubmit(event) {
     event.preventDefault();
     const question = input.trim();
-    if (!question || isLoading) return;
+    if ((!question && !pendingImage) || isLoading) return;
 
-    sendMessage({ text: question });
+    const messagePayload = {
+      text:
+        question ||
+        `Compare this image with ${product?.name || "the current product"} and suggest similar options.`,
+    };
+
+    if (pendingImage) {
+      messagePayload.files = [
+        {
+          type: "file",
+          mediaType: pendingImage.mediaType,
+          url: pendingImage.data,
+          filename: pendingImage.name,
+        },
+      ];
+      setPendingImage(null);
+    }
+
+    sendMessage(messagePayload);
     setInput("");
   }
 
@@ -217,9 +257,20 @@ export default function ProductAskCurator({ product }) {
         {messages.map((message, index) => {
           const text = getMessageText(message);
           const files = (message.parts || []).filter((part) => part.type === "file");
-          const toolProducts = message.role === "assistant" ? getToolProducts(message) : [];
-          const userQuestion =
-            message.role === "assistant" ? getPreviousUserQuestion(messages, index) : "";
+          const userContext =
+            message.role === "assistant"
+              ? getPreviousUserContext(messages, index)
+              : { text: "", hasImage: false };
+          const rawToolProducts =
+            message.role === "assistant" ? getToolProducts(message) : [];
+          const toolProducts =
+            message.role === "assistant"
+              ? filterProductsForCurrentContext(rawToolProducts, {
+                  currentProduct: product,
+                  userQuestion: userContext.text,
+                  hasImage: userContext.hasImage,
+                })
+              : [];
 
           if (message.role === "user") {
             return (
@@ -257,7 +308,8 @@ export default function ProductAskCurator({ product }) {
                     text ||
                     getFallbackRecommendationText(toolProducts, {
                       currentProduct: product,
-                      userQuestion,
+                      userQuestion: userContext.text,
+                      hasImage: userContext.hasImage,
                     })
                   }
                   className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm"
@@ -286,10 +338,34 @@ export default function ProductAskCurator({ product }) {
       </div>
 
       <form className="relative mt-4" onSubmit={handleSubmit}>
+        {pendingImage && (
+          <div className="mb-2 flex items-center gap-2 rounded-xl bg-surface-container-lowest p-2 shadow-sm">
+            <img
+              src={pendingImage.preview}
+              alt="Upload preview"
+              className="h-14 w-14 rounded-lg object-cover"
+            />
+            <span className="flex-1 truncate text-xs text-on-surface-variant">
+              {pendingImage.name}
+            </span>
+            <button
+              type="button"
+              onClick={() => setPendingImage(null)}
+              className="p-1 text-on-surface-variant hover:text-error"
+            >
+              <span className="material-symbols-outlined text-sm">close</span>
+            </button>
+          </div>
+        )}
+
         <div className="flex items-center rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-black/[0.04]">
+          <ImageUploadButton
+            onImageSelect={setPendingImage}
+            disabled={isLoading}
+          />
           <input
-            className="flex-1 rounded-xl border-none bg-transparent py-2.5 px-3 text-sm focus:ring-0"
-            placeholder="Ask about fit, material, and compare options..."
+            className="flex-1 rounded-xl border-none bg-transparent py-2.5 px-2 text-sm focus:ring-0"
+            placeholder="Ask about fit, material, compare options, or upload an image..."
             type="text"
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -297,7 +373,7 @@ export default function ProductAskCurator({ product }) {
           />
           <button
             type="submit"
-            disabled={isLoading || !input.trim()}
+            disabled={isLoading || (!input.trim() && !pendingImage)}
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[22px] leading-none">

@@ -30,7 +30,11 @@ export default function ChatView() {
     e.preventDefault();
     if (!input.trim() && !pendingImage) return;
 
-    const messagePayload = { text: input.trim() || "What products match this image?" };
+    const messagePayload = {
+      text:
+        input.trim() ||
+        "Identify the product in this image and recommend similar items from the catalog.",
+    };
 
     if (pendingImage) {
       messagePayload.files = [
