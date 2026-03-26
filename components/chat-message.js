@@ -3,20 +3,30 @@
 import ProductCard from "./product-card";
 
 export default function ChatMessage({ message }) {
+  const parts = message.parts || [];
+  const fallbackRecommendationText = (products) => {
+    if (!products.length) return "";
+    const names = products.slice(0, 3).map((p) => p.name).join(", ");
+    return `I filtered ${products.length} options based on your request. Top picks: ${names}. Here are the specific items. Share your budget, terrain type, or size preference and I can narrow this down further.`;
+  };
+
   if (message.role === "user") {
-    const imageParts = message.experimental_attachments || [];
-    const textContent =
-      typeof message.content === "string"
-        ? message.content
-        : message.content;
+    // Extract text and file parts from the message
+    const textParts = parts.filter((p) => p.type === "text");
+    const fileParts = parts.filter((p) => p.type === "file");
+    const textContent = textParts.map((p) => p.text).join("") || "";
 
     return (
       <div className="flex flex-col items-end gap-2">
-        {imageParts.map((att, i) => (
+        {fileParts.map((file, i) => (
           <div key={i} className="max-w-[200px] overflow-hidden rounded-xl">
             <img
-              src={att.url}
-              alt="Uploaded"
+              src={
+                typeof file.url === "string" && file.url.startsWith("data:")
+                  ? file.url
+                  : `data:${file.mediaType};base64,${file.url}`
+              }
+              alt={file.filename || "Uploaded"}
               className="h-full w-full object-cover"
             />
           </div>
@@ -30,15 +40,20 @@ export default function ChatMessage({ message }) {
     );
   }
 
-  // Assistant message — extract product results from toolInvocations
-  const toolProducts = (message.toolInvocations || [])
+  // Assistant message — extract text and tool results from parts
+  const textContent = parts
+    .filter((p) => p.type === "text")
+    .map((p) => p.text)
+    .join("");
+
+  const toolProducts = parts
     .filter(
-      (inv) =>
-        inv.toolName === "search_products" &&
-        inv.state === "result" &&
-        inv.result?.products
+      (p) =>
+        p.type === "tool-search_products" &&
+        p.state === "output-available" &&
+        Array.isArray(p.output?.products)
     )
-    .flatMap((inv) => inv.result.products);
+    .flatMap((p) => p.output.products);
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -58,9 +73,9 @@ export default function ChatMessage({ message }) {
         </span>
       </div>
       <div className="max-w-[90%] rounded-b-xl rounded-tr-xl border border-outline-variant/15 bg-surface-container-lowest px-6 py-5 leading-relaxed shadow-sm md:max-w-[80%]">
-        {message.content && (
+        {(textContent || toolProducts.length > 0) && (
           <p className="text-lg text-on-surface whitespace-pre-wrap">
-            {message.content}
+            {textContent || fallbackRecommendationText(toolProducts)}
           </p>
         )}
 

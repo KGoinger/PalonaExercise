@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">TrailBlazer GTX</title>
+  <desc id="desc">Product main image for TrailBlazer GTX</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f6f7f0"/>
+      <stop offset="100%" stop-color="#e8ecd8"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <ellipse cx="600" cy="700" rx="420" ry="360" fill="url(#halo)"/>
+
+  <g>
+    <path d="M380 760 C520 760 640 710 760 720 C820 725 880 760 900 810 L900 860 L340 860 L340 805 C350 785 360 770 380 760 Z" fill="#5b6632"/>
+      <path d="M360 862 L410 862 L385 895 Z M430 862 L480 862 L455 895 Z M500 862 L550 862 L525 895 Z M570 862 L620 862 L595 895 Z M640 862 L690 862 L665 895 Z M710 862 L760 862 L735 895 Z M780 862 L830 862 L805 895 Z" fill="#0f172a" opacity="0.35"/>
+  </g>
+
+  <g>
+    <rect x="180" y="1180" width="840" height="220" rx="28" fill="#ffffff" fill-opacity="0.82"/>
+    <text x="220" y="1260" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="52" font-weight="700">TrailBlazer GTX</text>
+    <text x="220" y="1322" fill="#334155" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="500">Curator AI Product Visual</text>
+  </g>
+</svg>

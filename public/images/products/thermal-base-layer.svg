@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">Thermal Base Layer</title>
+  <desc id="desc">Product main image for Thermal Base Layer</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f5f7fa"/>
+      <stop offset="100%" stop-color="#e5e7eb"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <ellipse cx="600" cy="700" rx="420" ry="360" fill="url(#halo)"/>
+
+  <g>
+    <path d="M400 430 L500 350 L700 350 L800 430 L755 590 L685 545 L685 880 L515 880 L515 545 L445 590 Z" fill="#374151"/>
+  </g>
+
+  <g>
+    <rect x="180" y="1180" width="840" height="220" rx="28" fill="#ffffff" fill-opacity="0.82"/>
+    <text x="220" y="1260" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="52" font-weight="700">Thermal Base Layer</text>
+    <text x="220" y="1322" fill="#334155" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="500">Curator AI Product Visual</text>
+  </g>
+</svg>

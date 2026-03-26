@@ -1,8 +1,8 @@
-import Link from "next/link";
 import { notFound } from "next/navigation";
 import { getProductById } from "@/lib/catalog";
 import TopNavBar from "../../../components/top-nav-bar";
 import BottomNavBar from "../../../components/bottom-nav-bar";
+import ProductAskCurator from "../../../components/product-ask-curator";
 
 export default async function ProductDetailPage({ params }) {
   const { id } = await params;
@@ -20,7 +20,7 @@ export default async function ProductDetailPage({ params }) {
           <div className="grid grid-cols-12 gap-4">
             <div className="relative col-span-12 aspect-[4/5] overflow-hidden rounded-2xl bg-surface-container-low">
               <img
-                className="h-full w-full object-cover"
+                className="h-full w-full object-contain p-6"
                 src={product.image}
                 alt={product.name}
               />
@@ -133,28 +133,7 @@ export default async function ProductDetailPage({ params }) {
             </div>
           </section>
 
-          {/* Ask Curator inline chat link */}
-          <div className="relative overflow-hidden rounded-3xl bg-surface-container-low p-6 ring-1 ring-outline-variant/15">
-            <div className="mb-4 flex items-center space-x-3">
-              <div className="flex h-10 w-10 items-center justify-center rounded-full bg-gradient-to-br from-primary to-primary-container shadow-md">
-                <span className="material-symbols-outlined text-xl text-white">
-                  smart_toy
-                </span>
-              </div>
-              <div>
-                <h3 className="font-headline text-sm font-bold">Ask Curator</h3>
-                <p className="text-[11px] font-medium text-outline">
-                  Instant Product Intelligence
-                </p>
-              </div>
-            </div>
-            <Link
-              href="/chat"
-              className="block w-full rounded-2xl border-none bg-white py-3 pl-4 pr-12 text-left text-sm text-on-surface-variant/60 shadow-sm transition-colors hover:bg-surface-container-low"
-            >
-              Ask about fit, material...
-            </Link>
-          </div>
+          <ProductAskCurator product={product} />
         </div>
       </main>
       <BottomNavBar />

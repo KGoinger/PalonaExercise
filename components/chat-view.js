@@ -2,20 +2,24 @@
 
 import { useRef, useEffect, useState } from "react";
 import { useChat } from "@ai-sdk/react";
+import { DefaultChatTransport } from "ai";
 import TopNavBar from "./top-nav-bar";
 import BottomNavBar from "./bottom-nav-bar";
 import ChatMessage from "./chat-message";
 import ImageUploadButton from "./image-upload-button";
 
 export default function ChatView() {
+  const [input, setInput] = useState("");
   const [pendingImage, setPendingImage] = useState(null);
   const messagesEndRef = useRef(null);
 
-  const { messages, input, handleInputChange, handleSubmit, isLoading, setInput } =
-    useChat({
+  const { messages, sendMessage, status } = useChat({
+    transport: new DefaultChatTransport({
       api: "/api/chat",
-      maxSteps: 5,
-    });
+    }),
+  });
+
+  const isLoading = status === "submitted" || status === "streaming";
 
   // Scroll to bottom on new messages
   useEffect(() => {
@@ -24,21 +28,30 @@ export default function ChatView() {
 
   function onSubmit(e) {
     e.preventDefault();
-    if (!(input || "").trim() && !pendingImage) return;
+    if (!input.trim() && !pendingImage) return;
 
-    const options = {};
+    const messagePayload = { text: input.trim() || "What products match this image?" };
+
     if (pendingImage) {
-      options.experimental_attachments = [
+      messagePayload.files = [
         {
-          name: pendingImage.name,
-          contentType: pendingImage.mediaType,
-          url: pendingImage.preview, // data URL
+          type: "file",
+          mediaType: pendingImage.mediaType,
+          url: pendingImage.data,
+          filename: pendingImage.name,
         },
       ];
       setPendingImage(null);
     }
 
-    handleSubmit(e, options);
+    sendMessage(messagePayload);
+    setInput("");
+  }
+
+  function onSuggestionClick(suggestion) {
+    if (isLoading) return;
+    sendMessage({ text: suggestion });
+    setInput("");
   }
 
   return (
@@ -74,7 +87,7 @@ export default function ChatView() {
                   <button
                     key={suggestion}
                     type="button"
-                    onClick={() => setInput(suggestion)}
+                    onClick={() => onSuggestionClick(suggestion)}
                     className="rounded-full border border-outline-variant/30 px-4 py-2 text-sm font-medium text-on-surface-variant transition-colors hover:bg-surface-container-low"
                   >
                     {suggestion}
@@ -147,13 +160,13 @@ export default function ChatView() {
                   placeholder="Describe what you're looking for..."
                   type="text"
                   value={input}
-                  onChange={handleInputChange}
+                  onChange={(e) => setInput(e.target.value)}
                   disabled={isLoading}
                 />
                 <div className="flex items-center gap-2 pr-2">
                   <button
                     type="submit"
-                    disabled={isLoading || (!(input || "").trim() && !pendingImage)}
+                    disabled={isLoading || (!input.trim() && !pendingImage)}
                     className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-container text-white shadow-lg shadow-primary/25 transition-transform active:scale-90 disabled:opacity-50"
                   >
                     <span className="material-symbols-outlined">arrow_upward</span>

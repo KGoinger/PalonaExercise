@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">AeroVent Performance Cap</title>
+  <desc id="desc">Product main image for AeroVent Performance Cap</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#f0f9ff"/>
+      <stop offset="100%" stop-color="#dff3ff"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <ellipse cx="600" cy="700" rx="420" ry="360" fill="url(#halo)"/>
+
+  <g>
+    <path d="M430 670 C430 560 515 490 610 490 C705 490 790 560 790 670 Z" fill="#0369a1"/>
+      <path d="M585 670 L850 720 C840 770 795 805 740 805 L430 805 C430 730 495 670 585 670 Z" fill="#0f172a" opacity="0.22"/>
+  </g>
+
+  <g>
+    <rect x="180" y="1180" width="840" height="220" rx="28" fill="#ffffff" fill-opacity="0.82"/>
+    <text x="220" y="1260" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="52" font-weight="700">AeroVent Performance Cap</text>
+    <text x="220" y="1322" fill="#334155" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="500">Curator AI Product Visual</text>
+  </g>
+</svg>

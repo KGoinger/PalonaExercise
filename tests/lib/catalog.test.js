@@ -1,5 +1,10 @@
 import { describe, it, expect } from "vitest";
-import { searchProducts, getProductById, getCategories } from "@/lib/catalog";
+import {
+  searchProducts,
+  getProductById,
+  getCategories,
+  inferCategoryFromText,
+} from "@/lib/catalog";
 
 describe("searchProducts", () => {
   it("returns all products when no query is given", () => {
@@ -35,6 +40,12 @@ describe("searchProducts", () => {
     const results = searchProducts({ q: "xyznonexistent" });
     expect(results).toEqual([]);
   });
+
+  it("prioritizes shoe category queries to shoe products", () => {
+    const results = searchProducts({ q: "shoes" });
+    expect(results.length).toBeGreaterThan(0);
+    expect(results[0].category).toBe("shoes");
+  });
 });
 
 describe("getProductById", () => {
@@ -54,5 +65,15 @@ describe("getCategories", () => {
     const categories = getCategories();
     expect(categories.length).toBeGreaterThan(0);
     expect(new Set(categories).size).toBe(categories.length);
+  });
+});
+
+describe("inferCategoryFromText", () => {
+  it("infers shoes from user text", () => {
+    expect(inferCategoryFromText("I need trail running shoes")).toBe("shoes");
+  });
+
+  it("returns undefined when no product type keyword exists", () => {
+    expect(inferCategoryFromText("I need something for rainy weather")).toBeUndefined();
   });
 });

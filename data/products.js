@@ -12,7 +12,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy", "White"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+      "/images/products/aero-mesh-tech-tee.svg",
     badge: "Top Pick",
   },
   {
@@ -28,7 +28,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Charcoal", "Olive", "Storm Blue"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+      "/images/products/stealth-run-crew.svg",
     badge: null,
   },
   {
@@ -44,7 +44,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Glacier White", "Deep Teal"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIILy1whUWcZQJDYJ10nsji5BP2t4fK_48Pbo5litFzw4uEi6Qk8iH2gCd6Zt5liV8BrMrYFmTqFT3Ymwh4QV7dpfSv7EN1EL2fURiR-lb3JP3K1nuz0LBJeN5ruP226MuouqG6t_aQA6_0Vw-BoZuNaDxI4_uN09xxaZOdpibvwpEA9ECQ6ur6E0aUfxONzdGBQeQx8ujI4n2drsmprM4DX5yaHQVFRZMY7JBgZOsZAnJmkqaECWcymjibddqrxcKIF0q3aPPrrk",
+      "/images/products/apex-aero-wick-tee.svg",
     badge: "Best Seller",
   },
   {
@@ -60,7 +60,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["White", "Navy", "Light Grey"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCAr2DiQg6M0HARaAcroQhTRoFBKrFmmY0Zo8ocS3MtqR2E_SyZIKSn1eTo0LcGAjInlc6Odsm1Yqfo2IO_9gTeSk8EPEEyAxl_QxuvbbfK5HUjhE7_PrdyaY0NJdCbNd193UpnrNb_ygSmlQHL5uFtdlMLwDtjzxgcANP2Xcy5G22gw_ibNF5p5lHdDmsGG2Le1ERjXGmEMbMPT8R_2eQi7k9ENDJeAL_wGV6b7x5niFD3n4X7Eo87s1ShTJUZXc4lquzYQbPmSiI",
+      "/images/products/urban-flex-polo.svg",
     badge: null,
   },
   {
@@ -76,7 +76,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Charcoal"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+      "/images/products/thermal-base-layer.svg",
     badge: null,
   },
   {
@@ -92,7 +92,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Navy", "Forest Green"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ5rXATxx2ji1smlErgCwwPm3MKzpV3aRyIyAIfHHJmpGgD9hOiT6R_cHXiFprFf6nefF7Gwjxuw6nhb-GrprNzE-NiAFfUB4T2mlX9R_sO9vs_POZUy0rHrwhjJXBGoOCj8is1VLQNlNnEfm3u1VGQQ7QDrZs8S41ym7gH_yz-JVEH8LOIB8XDci9F9WsW1iz0LcsEbqDNbfBG4GrIjMZMuf_kIdA7dFfjHU7RVAzv0KmCM4XVuewRvLFnKPQBkDDkMoA8mfWYFk",
+      "/images/products/stride-flex-shorts.svg",
     badge: null,
   },
   {
@@ -108,7 +108,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL"],
     colors: ["Black", "Dark Grey"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+      "/images/products/marathon-tight.svg",
     badge: null,
   },
   {
@@ -124,7 +124,7 @@ export const products = [
     sizes: ["S", "M", "L", "XL", "XXL"],
     colors: ["Heather Grey", "Black", "Navy"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+      "/images/products/weekend-jogger.svg",
     badge: null,
   },
   {
@@ -140,7 +140,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["White/Grey", "Black/Volt", "Navy/Orange"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCAr2DiQg6M0HARaAcroQhTRoFBKrFmmY0Zo8ocS3MtqR2E_SyZIKSn1eTo0LcGAjInlc6Odsm1Yqfo2IO_9gTeSk8EPEEyAxl_QxuvbbfK5HUjhE7_PrdyaY0NJdCbNd193UpnrNb_ygSmlQHL5uFtdlMLwDtjzxgcANP2Xcy5G22gw_ibNF5p5lHdDmsGG2Le1ERjXGmEMbMPT8R_2eQi7k9ENDJeAL_wGV6b7x5niFD3n4X7Eo87s1ShTJUZXc4lquzYQbPmSiI",
+      "/images/products/cloudstrike-runner.svg",
     badge: "Best Seller",
   },
   {
@@ -156,7 +156,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["Rust/Brown", "Black/Green"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+      "/images/products/trailblazer-gtx.svg",
     badge: null,
   },
   {
@@ -172,7 +172,7 @@ export const products = [
     sizes: ["7", "8", "9", "10", "11", "12"],
     colors: ["Neon Yellow", "White/Red"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ5rXATxx2ji1smlErgCwwPm3MKzpV3aRyIyAIfHHJmpGgD9hOiT6R_cHXiFprFf6nefF7Gwjxuw6nhb-GrprNzE-NiAFfUB4T2mlX9R_sO9vs_POZUy0rHrwhjJXBGoOCj8is1VLQNlNnEfm3u1VGQQ7QDrZs8S41ym7gH_yz-JVEH8LOIB8XDci9F9WsW1iz0LcsEbqDNbfBG4GrIjMZMuf_kIdA7dFfjHU7RVAzv0KmCM4XVuewRvLFnKPQBkDDkMoA8mfWYFk",
+      "/images/products/tempo-racer-flat.svg",
     badge: "New",
   },
   {
@@ -188,7 +188,7 @@ export const products = [
     sizes: ["One Size"],
     colors: ["White", "Black", "Navy"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIILy1whUWcZQJDYJ10nsji5BP2t4fK_48Pbo5litFzw4uEi6Qk8iH2gCd6Zt5liV8BrMrYFmTqFT3Ymwh4QV7dpfSv7EN1EL2fURiR-lb3JP3K1nuz0LBJeN5ruP226MuouqG6t_aQA6_0Vw-BoZuNaDxI4_uN09xxaZOdpibvwpEA9ECQ6ur6E0aUfxONzdGBQeQx8ujI4n2drsmprM4DX5yaHQVFRZMY7JBgZOsZAnJmkqaECWcymjibddqrxcKIF0q3aPPrrk",
+      "/images/products/performance-cap.svg",
     badge: null,
   },
   {
@@ -204,7 +204,7 @@ export const products = [
     sizes: ["S/M", "L/XL"],
     colors: ["Neon Yellow", "Neon Orange"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+      "/images/products/reflective-vest.svg",
     badge: null,
   },
   {
@@ -220,7 +220,7 @@ export const products = [
     sizes: ["One Size"],
     colors: ["Black", "Grey"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+      "/images/products/hydration-belt.svg",
     badge: null,
   },
   {
@@ -236,7 +236,7 @@ export const products = [
     sizes: ["S", "M", "L"],
     colors: ["Black", "White", "Grey"],
     image:
-      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+      "/images/products/compression-socks.svg",
     badge: null,
   },
 ];

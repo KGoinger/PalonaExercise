@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="1500" viewBox="0 0 1200 1500" role="img" aria-labelledby="title desc">
+  <title id="title">CloudStrike Runner</title>
+  <desc id="desc">Product main image for CloudStrike Runner</desc>
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#eff8ff"/>
+      <stop offset="100%" stop-color="#d7ecff"/>
+    </linearGradient>
+    <radialGradient id="halo" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="#ffffff" stop-opacity="0.75"/>
+      <stop offset="100%" stop-color="#ffffff" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+
+  <rect width="1200" height="1500" fill="url(#bg)"/>
+  <ellipse cx="600" cy="700" rx="420" ry="360" fill="url(#halo)"/>
+
+  <g>
+    <path d="M380 760 C520 760 640 710 760 720 C820 725 880 760 900 810 L900 860 L340 860 L340 805 C350 785 360 770 380 760 Z" fill="#0f766e"/>
+      <rect x="360" y="840" width="520" height="26" rx="10" fill="#111827" opacity="0.35"/>
+  </g>
+
+  <g>
+    <rect x="180" y="1180" width="840" height="220" rx="28" fill="#ffffff" fill-opacity="0.82"/>
+    <text x="220" y="1260" fill="#0f172a" font-family="'Segoe UI', Arial, sans-serif" font-size="52" font-weight="700">CloudStrike Runner</text>
+    <text x="220" y="1322" fill="#334155" font-family="'Segoe UI', Arial, sans-serif" font-size="32" font-weight="500">Curator AI Product Visual</text>
+  </g>
+</svg>
