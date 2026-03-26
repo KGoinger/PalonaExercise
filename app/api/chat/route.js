@@ -1,6 +1,6 @@
 import { convertToModelMessages, streamText } from "ai";
 import { getModel } from "@/lib/model";
-import { buildSystemPrompt, agentTools } from "@/lib/agent";
+import { buildSystemPrompt, buildAgentTools } from "@/lib/agent";
 import { getProductById } from "@/lib/catalog";
 
 function sanitizeMessages(messages) {
@@ -58,7 +58,7 @@ export async function POST(request) {
     model: getModel(),
     system: buildSystemPrompt({ currentProduct }),
     messages: await convertToModelMessages(sanitizedMessages),
-    tools: agentTools,
+    tools: buildAgentTools({ currentProduct }),
     maxSteps: 5,
   });
 

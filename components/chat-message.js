@@ -1,6 +1,7 @@
 "use client";
 
 import ProductCard from "./product-card";
+import MarkdownContent from "./markdown-content";
 
 function dedupeProductsById(products) {
   const seen = new Set();
@@ -12,12 +13,70 @@ function dedupeProductsById(products) {
   });
 }
 
+function extractDisplayedToolProducts(parts) {
+  const toolParts = (parts || []).filter(
+    (part) =>
+      part.type === "tool-search_products" &&
+      part.state === "output-available" &&
+      Array.isArray(part.output?.products)
+  );
+
+  if (!toolParts.length) return [];
+
+  const partsWithProducts = toolParts.filter(
+    (part) => (part.output?.products || []).length > 0
+  );
+
+  if (!partsWithProducts.length) return [];
+
+  const withCategory = partsWithProducts.filter(
+    (part) =>
+      typeof part.output?.appliedCategory === "string" &&
+      part.output.appliedCategory.length > 0
+  );
+
+  const candidatePool = withCategory.length > 0 ? withCategory : partsWithProducts;
+
+  const preferredPart = candidatePool.reduce((best, current) => {
+    const bestLen = (best.output?.products || []).length;
+    const currentLen = (current.output?.products || []).length;
+    return currentLen < bestLen ? current : best;
+  }, candidatePool[0]);
+
+  const preferredProducts = dedupeProductsById(preferredPart.output?.products || []);
+  const hasCategory =
+    typeof preferredPart.output?.appliedCategory === "string" &&
+    preferredPart.output.appliedCategory.length > 0;
+
+  if (!hasCategory && preferredProducts.length >= 10) {
+    return [];
+  }
+
+  return preferredProducts;
+}
+
 export default function ChatMessage({ message }) {
   const parts = message.parts || [];
+  const formatPrice = (price) =>
+    typeof price === "number" ? `$${price.toFixed(2)}` : "N/A";
+  const summarizeProduct = (product) => {
+    const raw = (product?.description || "").replace(/\s+/g, " ").trim();
+    if (!raw) return "General performance option from the catalog.";
+    const sentence = raw.split(".").find((part) => part.trim().length > 0)?.trim() || raw;
+    return sentence.endsWith(".") ? sentence : `${sentence}.`;
+  };
   const fallbackRecommendationText = (products) => {
-    if (!products.length) return "";
-    const names = products.slice(0, 3).map((p) => p.name).join(", ");
-    return `I filtered ${products.length} options based on your request. Top picks: ${names}. Here are the specific items. Share your budget, terrain type, or size preference and I can narrow this down further.`;
+    if (!products.length) {
+      return "I couldn't confidently map this image to catalog items yet. Please try a more specific prompt such as \"find similar running tees\" or \"find this exact shirt type\".";
+    }
+    const top = products.slice(0, 3);
+    const lines = [`I found **${products.length}** relevant options. Top matches:`, ""];
+    top.forEach((candidate, index) => {
+      lines.push(`${index + 1}. **${candidate.name}** (${formatPrice(candidate.price)})`);
+      lines.push(`- ${summarizeProduct(candidate)}`);
+    });
+    lines.push("", "Share your fit and budget preference and I can refine this further.");
+    return lines.join("\n");
   };
 
   if (message.role === "user") {
@@ -56,16 +115,7 @@ export default function ChatMessage({ message }) {
     .map((p) => p.text)
     .join("");
 
-  const toolProducts = dedupeProductsById(
-    parts
-      .filter(
-        (p) =>
-          p.type === "tool-search_products" &&
-          p.state === "output-available" &&
-          Array.isArray(p.output?.products)
-      )
-      .flatMap((p) => p.output.products)
-  );
+  const toolProducts = extractDisplayedToolProducts(parts);
 
   return (
     <div className="flex flex-col items-start gap-4">
@@ -85,11 +135,10 @@ export default function ChatMessage({ message }) {
         </span>
       </div>
       <div className="max-w-[90%] rounded-b-xl rounded-tr-xl border border-outline-variant/15 bg-surface-container-lowest px-6 py-5 leading-relaxed shadow-sm md:max-w-[80%]">
-        {(textContent || toolProducts.length > 0) && (
-          <p className="text-lg text-on-surface whitespace-pre-wrap">
-            {textContent || fallbackRecommendationText(toolProducts)}
-          </p>
-        )}
+        <MarkdownContent
+          content={textContent || fallbackRecommendationText(toolProducts)}
+          className="text-lg text-on-surface"
+        />
 
         {toolProducts.length > 0 && (
           <div className="-mx-2 mt-4 flex gap-4 overflow-x-auto px-2 pb-4 hide-scrollbar">

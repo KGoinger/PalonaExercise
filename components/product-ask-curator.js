@@ -1,16 +1,25 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import ProductCard from "./product-card";
-import ImageUploadButton from "./image-upload-button";
+import MarkdownContent from "./markdown-content";
 
 function getMessageText(message) {
   return (message.parts || [])
     .filter((part) => part.type === "text")
     .map((part) => part.text)
     .join("");
+}
+
+function getPreviousUserQuestion(messages, index) {
+  for (let i = index - 1; i >= 0; i -= 1) {
+    if (messages[i]?.role === "user") {
+      return getMessageText(messages[i]);
+    }
+  }
+  return "";
 }
 
 function dedupeProductsById(products) {
@@ -24,27 +33,126 @@ function dedupeProductsById(products) {
 }
 
 function getToolProducts(message) {
-  return dedupeProductsById(
-    (message.parts || [])
-      .filter(
-        (part) =>
-          part.type === "tool-search_products" &&
-          part.state === "output-available" &&
-          Array.isArray(part.output?.products)
-      )
-      .flatMap((part) => part.output.products)
+  const toolParts = (message.parts || []).filter(
+    (part) =>
+      part.type === "tool-search_products" &&
+      part.state === "output-available" &&
+      Array.isArray(part.output?.products)
+  );
+
+  if (!toolParts.length) return [];
+
+  const partsWithProducts = toolParts.filter(
+    (part) => (part.output?.products || []).length > 0
+  );
+
+  if (!partsWithProducts.length) return [];
+
+  const withCategory = partsWithProducts.filter(
+    (part) =>
+      typeof part.output?.appliedCategory === "string" &&
+      part.output.appliedCategory.length > 0
+  );
+
+  const candidatePool = withCategory.length > 0 ? withCategory : partsWithProducts;
+
+  const preferredPart = candidatePool.reduce((best, current) => {
+    const bestLen = (best.output?.products || []).length;
+    const currentLen = (current.output?.products || []).length;
+    return currentLen < bestLen ? current : best;
+  }, candidatePool[0]);
+
+  const preferredProducts = dedupeProductsById(preferredPart.output?.products || []);
+  const hasCategory =
+    typeof preferredPart.output?.appliedCategory === "string" &&
+    preferredPart.output.appliedCategory.length > 0;
+
+  if (!hasCategory && preferredProducts.length >= 10) {
+    return [];
+  }
+
+  return preferredProducts;
+}
+
+function formatPrice(price) {
+  return typeof price === "number" ? `$${price.toFixed(2)}` : "N/A";
+}
+
+function summarizeProduct(product) {
+  const raw = (product?.description || "").replace(/\s+/g, " ").trim();
+  if (!raw) return "General performance option from the catalog.";
+  const sentence = raw.split(".").find((part) => part.trim().length > 0)?.trim() || raw;
+  return sentence.endsWith(".") ? sentence : `${sentence}.`;
+}
+
+function isComparisonIntent(text) {
+  return /(compare|difference|different|vs|versus|trade[- ]?off|better)/i.test(
+    text || ""
   );
 }
 
-function getFallbackRecommendationText(products) {
-  if (!products.length) return "";
-  const names = products.slice(0, 3).map((p) => p.name).join(", ");
-  return `I filtered ${products.length} candidates for your question. Top recommendations: ${names}. Share your budget, use case, or fit preference and I will narrow the list further.`;
+function getFallbackRecommendationText(products, options = {}) {
+  const { currentProduct, userQuestion } = options;
+
+  if (!products.length) {
+    return "I couldn't confidently map this image to catalog items yet. Please try a more specific prompt such as \"find similar running tees\" or \"show tops like this\".";
+  }
+
+  if (currentProduct && isComparisonIntent(userQuestion)) {
+    const alternatives = products
+      .filter((product) => product.id !== currentProduct.id)
+      .slice(0, 3);
+
+    if (alternatives.length > 0) {
+      const lines = [
+        `I compared **${currentProduct.name}** (${formatPrice(
+          currentProduct.price
+        )}) with similar options from the catalog:`,
+        "",
+      ];
+
+      alternatives.forEach((candidate, index) => {
+        const priceDiff =
+          typeof candidate.price === "number" &&
+          typeof currentProduct.price === "number"
+            ? candidate.price - currentProduct.price
+            : null;
+
+        const priceDiffText =
+          priceDiff === null
+            ? "Price difference unavailable."
+            : priceDiff === 0
+            ? "Same price."
+            : priceDiff > 0
+            ? `${formatPrice(priceDiff)} more expensive.`
+            : `${formatPrice(Math.abs(priceDiff))} cheaper.`;
+
+        lines.push(`${index + 1}. **${candidate.name}** (${formatPrice(candidate.price)})`);
+        lines.push(`- Material/Fit profile: ${summarizeProduct(candidate)}`);
+        lines.push(`- Compared with **${currentProduct.name}**: ${priceDiffText}`);
+      });
+
+      lines.push(
+        "",
+        "If you want, I can narrow this down by priority: breathability, warmth, fit, or budget."
+      );
+      return lines.join("\n");
+    }
+  }
+
+  const top = products.slice(0, 3);
+  const lines = [`I found **${products.length}** relevant options. Top matches:`, ""];
+  top.forEach((candidate, index) => {
+    lines.push(`${index + 1}. **${candidate.name}** (${formatPrice(candidate.price)})`);
+    lines.push(`- ${summarizeProduct(candidate)}`);
+  });
+  lines.push("", "Tell me your fit and budget preference and I can refine further.");
+  return lines.join("\n");
 }
 
 export default function ProductAskCurator({ product }) {
   const [input, setInput] = useState("");
-  const [pendingImage, setPendingImage] = useState(null);
+  const [hasHydrated, setHasHydrated] = useState(false);
   const { messages, sendMessage, status } = useChat({
     transport: new DefaultChatTransport({
       api: "/api/chat",
@@ -52,12 +160,15 @@ export default function ProductAskCurator({ product }) {
     }),
   });
 
+  useEffect(() => {
+    setHasHydrated(true);
+  }, []);
+
   const isLoading = status === "submitted" || status === "streaming";
   const suggestions = useMemo(
     () => [
       `Is ${product?.name || "this product"} moisture-wicking?`,
       `Compare ${product?.name || "this product"} with similar options under $100.`,
-      "What are the key differences in fit and material?",
     ],
     [product?.name]
   );
@@ -65,25 +176,9 @@ export default function ProductAskCurator({ product }) {
   function handleSubmit(event) {
     event.preventDefault();
     const question = input.trim();
-    if ((!question && !pendingImage) || isLoading) return;
+    if (!question || isLoading) return;
 
-    const messagePayload = {
-      text: question || "Find products similar to this image.",
-    };
-
-    if (pendingImage) {
-      messagePayload.files = [
-        {
-          type: "file",
-          mediaType: pendingImage.mediaType,
-          url: pendingImage.data,
-          filename: pendingImage.name,
-        },
-      ];
-      setPendingImage(null);
-    }
-
-    sendMessage(messagePayload);
+    sendMessage({ text: question });
     setInput("");
   }
 
@@ -103,7 +198,7 @@ export default function ProductAskCurator({ product }) {
         </div>
       </div>
 
-      {messages.length === 0 && (
+      {hasHydrated && messages.length === 0 && (
         <div className="mb-4 flex flex-wrap gap-2">
           {suggestions.map((suggestion) => (
             <button
@@ -119,10 +214,12 @@ export default function ProductAskCurator({ product }) {
       )}
 
       <div className="hide-scrollbar max-h-[26rem] space-y-4 overflow-y-auto pr-1">
-        {messages.map((message) => {
+        {messages.map((message, index) => {
           const text = getMessageText(message);
           const files = (message.parts || []).filter((part) => part.type === "file");
           const toolProducts = message.role === "assistant" ? getToolProducts(message) : [];
+          const userQuestion =
+            message.role === "assistant" ? getPreviousUserQuestion(messages, index) : "";
 
           if (message.role === "user") {
             return (
@@ -154,13 +251,18 @@ export default function ProductAskCurator({ product }) {
 
           return (
             <div key={message.id} className="space-y-3">
-              {(text || toolProducts.length > 0) && (
-                <div className="flex justify-start">
-                  <div className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm whitespace-pre-wrap">
-                    {text || getFallbackRecommendationText(toolProducts)}
-                  </div>
-                </div>
-              )}
+              <div className="flex justify-start">
+                <MarkdownContent
+                  content={
+                    text ||
+                    getFallbackRecommendationText(toolProducts, {
+                      currentProduct: product,
+                      userQuestion,
+                    })
+                  }
+                  className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm"
+                />
+              </div>
 
               {toolProducts.length > 0 && (
                 <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 hide-scrollbar">
@@ -184,34 +286,10 @@ export default function ProductAskCurator({ product }) {
       </div>
 
       <form className="relative mt-4" onSubmit={handleSubmit}>
-        {pendingImage && (
-          <div className="mb-2 flex items-center gap-2 rounded-xl bg-surface-container-lowest p-2 shadow-sm">
-            <img
-              src={pendingImage.preview}
-              alt="Upload preview"
-              className="h-14 w-14 rounded-lg object-cover"
-            />
-            <span className="flex-1 truncate text-xs text-on-surface-variant">
-              {pendingImage.name}
-            </span>
-            <button
-              type="button"
-              onClick={() => setPendingImage(null)}
-              className="p-1 text-on-surface-variant hover:text-error"
-            >
-              <span className="material-symbols-outlined text-sm">close</span>
-            </button>
-          </div>
-        )}
-
         <div className="flex items-center rounded-2xl bg-white p-1.5 shadow-sm ring-1 ring-black/[0.04]">
-          <ImageUploadButton
-            onImageSelect={setPendingImage}
-            disabled={isLoading}
-          />
           <input
-            className="flex-1 rounded-xl border-none bg-transparent py-2.5 pl-2 pr-2 text-sm focus:ring-0"
-            placeholder="Ask about fit, material, compare options, or upload an image..."
+            className="flex-1 rounded-xl border-none bg-transparent py-2.5 px-3 text-sm focus:ring-0"
+            placeholder="Ask about fit, material, and compare options..."
             type="text"
             value={input}
             onChange={(event) => setInput(event.target.value)}
@@ -219,7 +297,7 @@ export default function ProductAskCurator({ product }) {
           />
           <button
             type="submit"
-            disabled={isLoading || (!input.trim() && !pendingImage)}
+            disabled={isLoading || !input.trim()}
             className="flex h-10 w-10 items-center justify-center rounded-xl bg-primary text-white disabled:cursor-not-allowed disabled:opacity-50"
           >
             <span className="material-symbols-outlined text-[22px] leading-none">
