@@ -1,0 +1,242 @@
+export const products = [
+  {
+    id: "aero-mesh-tech-tee",
+    name: "Aero-Mesh Tech Tee",
+    category: "tops",
+    price: 45.0,
+    description:
+      "Ultralight mesh running tee with 4-way stretch. Moisture-wicking fabric keeps you dry during high-intensity workouts. Flatlock seams prevent chafing on long runs.",
+    tags: ["running", "breathable", "moisture-wicking", "sports", "t-shirt"],
+    rating: 4.7,
+    reviewCount: 89,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "Navy", "White"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+    badge: "Top Pick",
+  },
+  {
+    id: "stealth-run-crew",
+    name: "Stealth Run Crew",
+    category: "tops",
+    price: 38.0,
+    description:
+      "Minimalist crew-neck running shirt with laser-cut ventilation zones. Anti-odor treated fabric stays fresh across multiple sessions.",
+    tags: ["running", "crew-neck", "ventilation", "sports", "t-shirt"],
+    rating: 4.5,
+    reviewCount: 56,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Charcoal", "Olive", "Storm Blue"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+    badge: null,
+  },
+  {
+    id: "apex-aero-wick-tee",
+    name: "Apex Aero-Wick Tee",
+    category: "tops",
+    price: 68.0,
+    description:
+      "Designed for high-intensity endurance training. Features signature 3D-knit topology that moves heat away from the body 40% faster than standard synthetics. Flatlock seams and raglan cut for full range of motion.",
+    tags: ["running", "endurance", "performance", "moisture-wicking", "t-shirt", "premium"],
+    rating: 4.8,
+    reviewCount: 124,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "Glacier White", "Deep Teal"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIILy1whUWcZQJDYJ10nsji5BP2t4fK_48Pbo5litFzw4uEi6Qk8iH2gCd6Zt5liV8BrMrYFmTqFT3Ymwh4QV7dpfSv7EN1EL2fURiR-lb3JP3K1nuz0LBJeN5ruP226MuouqG6t_aQA6_0Vw-BoZuNaDxI4_uN09xxaZOdpibvwpEA9ECQ6ur6E0aUfxONzdGBQeQx8ujI4n2drsmprM4DX5yaHQVFRZMY7JBgZOsZAnJmkqaECWcymjibddqrxcKIF0q3aPPrrk",
+    badge: "Best Seller",
+  },
+  {
+    id: "urban-flex-polo",
+    name: "Urban Flex Polo",
+    category: "tops",
+    price: 55.0,
+    description:
+      "Performance polo that transitions from the gym to casual outings. Wrinkle-resistant fabric with moisture management. Classic collar with modern slim fit.",
+    tags: ["polo", "casual", "wrinkle-resistant", "versatile"],
+    rating: 4.3,
+    reviewCount: 42,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["White", "Navy", "Light Grey"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCAr2DiQg6M0HARaAcroQhTRoFBKrFmmY0Zo8ocS3MtqR2E_SyZIKSn1eTo0LcGAjInlc6Odsm1Yqfo2IO_9gTeSk8EPEEyAxl_QxuvbbfK5HUjhE7_PrdyaY0NJdCbNd193UpnrNb_ygSmlQHL5uFtdlMLwDtjzxgcANP2Xcy5G22gw_ibNF5p5lHdDmsGG2Le1ERjXGmEMbMPT8R_2eQi7k9ENDJeAL_wGV6b7x5niFD3n4X7Eo87s1ShTJUZXc4lquzYQbPmSiI",
+    badge: null,
+  },
+  {
+    id: "thermal-base-layer",
+    name: "Thermal Base Layer",
+    category: "tops",
+    price: 72.0,
+    description:
+      "Cold-weather running essential. Brushed interior traps warmth while the outer face wicks moisture. Thumbhole cuffs and flatlock seams for layering comfort.",
+    tags: ["running", "winter", "base-layer", "thermal", "cold-weather"],
+    rating: 4.6,
+    reviewCount: 78,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "Charcoal"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+    badge: null,
+  },
+  {
+    id: "stride-flex-shorts",
+    name: "Stride Flex Shorts",
+    category: "bottoms",
+    price: 48.0,
+    description:
+      "5-inch inseam running shorts with built-in compression liner. Zippered back pocket for keys and cards. Reflective details for low-light visibility.",
+    tags: ["running", "shorts", "compression", "reflective", "sports"],
+    rating: 4.6,
+    reviewCount: 103,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "Navy", "Forest Green"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ5rXATxx2ji1smlErgCwwPm3MKzpV3aRyIyAIfHHJmpGgD9hOiT6R_cHXiFprFf6nefF7Gwjxuw6nhb-GrprNzE-NiAFfUB4T2mlX9R_sO9vs_POZUy0rHrwhjJXBGoOCj8is1VLQNlNnEfm3u1VGQQ7QDrZs8S41ym7gH_yz-JVEH8LOIB8XDci9F9WsW1iz0LcsEbqDNbfBG4GrIjMZMuf_kIdA7dFfjHU7RVAzv0KmCM4XVuewRvLFnKPQBkDDkMoA8mfWYFk",
+    badge: null,
+  },
+  {
+    id: "marathon-tight",
+    name: "Marathon Tight",
+    category: "bottoms",
+    price: 85.0,
+    description:
+      "Full-length compression tight for distance running. Graduated compression improves circulation and reduces fatigue. Mesh panels behind knees for ventilation.",
+    tags: ["running", "tights", "compression", "marathon", "sports", "leggings"],
+    rating: 4.7,
+    reviewCount: 67,
+    sizes: ["S", "M", "L", "XL"],
+    colors: ["Black", "Dark Grey"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+    badge: null,
+  },
+  {
+    id: "weekend-jogger",
+    name: "Weekend Jogger",
+    category: "bottoms",
+    price: 62.0,
+    description:
+      "Tapered jogger pants with stretch waistband and zippered pockets. Soft French terry interior for all-day comfort. Perfect for casual wear and light workouts.",
+    tags: ["jogger", "casual", "comfortable", "lounge", "pants"],
+    rating: 4.4,
+    reviewCount: 91,
+    sizes: ["S", "M", "L", "XL", "XXL"],
+    colors: ["Heather Grey", "Black", "Navy"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+    badge: null,
+  },
+  {
+    id: "cloudstrike-runner",
+    name: "CloudStrike Runner",
+    category: "shoes",
+    price: 145.0,
+    description:
+      "Lightweight neutral running shoe with CloudFoam midsole for responsive cushioning. Engineered mesh upper adapts to foot shape. Rubber outsole with strategic grip zones.",
+    tags: ["running", "shoes", "cushioning", "neutral", "lightweight"],
+    rating: 4.8,
+    reviewCount: 215,
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["White/Grey", "Black/Volt", "Navy/Orange"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCAr2DiQg6M0HARaAcroQhTRoFBKrFmmY0Zo8ocS3MtqR2E_SyZIKSn1eTo0LcGAjInlc6Odsm1Yqfo2IO_9gTeSk8EPEEyAxl_QxuvbbfK5HUjhE7_PrdyaY0NJdCbNd193UpnrNb_ygSmlQHL5uFtdlMLwDtjzxgcANP2Xcy5G22gw_ibNF5p5lHdDmsGG2Le1ERjXGmEMbMPT8R_2eQi7k9ENDJeAL_wGV6b7x5niFD3n4X7Eo87s1ShTJUZXc4lquzYQbPmSiI",
+    badge: "Best Seller",
+  },
+  {
+    id: "trailblazer-gtx",
+    name: "TrailBlazer GTX",
+    category: "shoes",
+    price: 165.0,
+    description:
+      "Waterproof trail running shoe with GORE-TEX membrane. Aggressive lug pattern for off-road traction. Rock plate protection and reinforced toe cap.",
+    tags: ["trail", "running", "shoes", "waterproof", "off-road", "hiking"],
+    rating: 4.6,
+    reviewCount: 134,
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["Rust/Brown", "Black/Green"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+    badge: null,
+  },
+  {
+    id: "tempo-racer-flat",
+    name: "Tempo Racer Flat",
+    category: "shoes",
+    price: 120.0,
+    description:
+      "Race-day flat with carbon-fiber plate for explosive toe-off. Weighs just 6.2 oz. Minimal drop design for natural foot positioning during speed work.",
+    tags: ["racing", "shoes", "lightweight", "carbon-plate", "speed", "running"],
+    rating: 4.5,
+    reviewCount: 48,
+    sizes: ["7", "8", "9", "10", "11", "12"],
+    colors: ["Neon Yellow", "White/Red"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAZ5rXATxx2ji1smlErgCwwPm3MKzpV3aRyIyAIfHHJmpGgD9hOiT6R_cHXiFprFf6nefF7Gwjxuw6nhb-GrprNzE-NiAFfUB4T2mlX9R_sO9vs_POZUy0rHrwhjJXBGoOCj8is1VLQNlNnEfm3u1VGQQ7QDrZs8S41ym7gH_yz-JVEH8LOIB8XDci9F9WsW1iz0LcsEbqDNbfBG4GrIjMZMuf_kIdA7dFfjHU7RVAzv0KmCM4XVuewRvLFnKPQBkDDkMoA8mfWYFk",
+    badge: "New",
+  },
+  {
+    id: "performance-cap",
+    name: "AeroVent Performance Cap",
+    category: "accessories",
+    price: 28.0,
+    description:
+      "Lightweight running cap with laser-perforated panels for maximum airflow. Sweat-wicking headband and adjustable back closure. UPF 50+ sun protection.",
+    tags: ["cap", "hat", "running", "sun-protection", "accessories"],
+    rating: 4.4,
+    reviewCount: 63,
+    sizes: ["One Size"],
+    colors: ["White", "Black", "Navy"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDIILy1whUWcZQJDYJ10nsji5BP2t4fK_48Pbo5litFzw4uEi6Qk8iH2gCd6Zt5liV8BrMrYFmTqFT3Ymwh4QV7dpfSv7EN1EL2fURiR-lb3JP3K1nuz0LBJeN5ruP226MuouqG6t_aQA6_0Vw-BoZuNaDxI4_uN09xxaZOdpibvwpEA9ECQ6ur6E0aUfxONzdGBQeQx8ujI4n2drsmprM4DX5yaHQVFRZMY7JBgZOsZAnJmkqaECWcymjibddqrxcKIF0q3aPPrrk",
+    badge: null,
+  },
+  {
+    id: "reflective-vest",
+    name: "NightGlow Reflective Vest",
+    category: "accessories",
+    price: 35.0,
+    description:
+      "Highly visible running vest with 360-degree reflective panels. Lightweight mesh construction with adjustable straps. Essential for dawn, dusk, and night runs.",
+    tags: ["reflective", "safety", "running", "vest", "night", "accessories"],
+    rating: 4.7,
+    reviewCount: 82,
+    sizes: ["S/M", "L/XL"],
+    colors: ["Neon Yellow", "Neon Orange"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuDMaJ55r5aqcd-di87JTDT3b8U1YL97P9VFBOAawlqBfw7qS_QTX756Lh1UdXtOQthTiaw7g31L-YA1IxmrLroIdXSzbd2SIq7CszJU25t5XZKol9yPpEmglwH24gmUGv_-mWAZVhxFWhxpJwkNoMdh-LPXkbQPzuoehoF8kpIetxUZ8BDHGYJjEwzOAtUlSm3kftVTs9U4Vyat6DFEGkI5aR-Zqiadj_oiiW00lPkp9rrLz6lTVXU8WGAcYb-lNij1U7VvDstobWU",
+    badge: null,
+  },
+  {
+    id: "hydration-belt",
+    name: "HydroTrail Belt",
+    category: "accessories",
+    price: 42.0,
+    description:
+      "Hands-free hydration belt with two 10oz flasks. Expandable storage pocket fits phone and nutrition. Bounce-free fit with elastic waistband.",
+    tags: ["hydration", "belt", "running", "accessories", "water"],
+    rating: 4.3,
+    reviewCount: 55,
+    sizes: ["One Size"],
+    colors: ["Black", "Grey"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuAzpW3gUwuC0gFDsmGrnzfXide79JX2KBGHqTYATUVOIcMWHWmBExSFCwkiIyMsQxrhgQYC2FRePPlQpsCVs37qWreYIQuNDglRtVk18z4_14wIu9DhC-iZBLGYZhMWFo4HHvVfqMoc2tEi0jizIWrqeNgwMMdLFLuj-gcU0quJxXTI14KrB6f2vgQDL_srfsd6SnvnL6F6eHISrIZ0gLZewxvPQXxuz9BG9Lvx-re473AkfPX1RPovek83UpP6cpeQyWs5h5CLCZY",
+    badge: null,
+  },
+  {
+    id: "compression-socks",
+    name: "EnduroGrip Compression Socks",
+    category: "accessories",
+    price: 24.0,
+    description:
+      "Graduated compression crew socks for improved circulation during runs. Reinforced heel and toe with arch support. Moisture-wicking merino blend.",
+    tags: ["socks", "compression", "running", "accessories", "merino"],
+    rating: 4.5,
+    reviewCount: 97,
+    sizes: ["S", "M", "L"],
+    colors: ["Black", "White", "Grey"],
+    image:
+      "https://lh3.googleusercontent.com/aida-public/AB6AXuCn1u5ICKY2Txfve-5l7uupFUTn90oGSdJO5Ur7afc_jsak34ai19T__lAlLfc4kjA8ixU6ZcLAOQ-grGdj1XViTaAIlHzWlZIzoXXdMLdS36HLAePnL-ioKTVlx4pJLICbEVWoxX8veHYOXgHWU3Dl7yi4HjhuGAXjFhKP0RR6MnIhnJlto3x_WK5YRg-MHqXiiU7Q-bKqwksRTfEzQK34cKMutUnEoCPL3Ev-uYpJtk6xb6r8k3Xo9nWzqJVZpI-1GAhRIetcK9A",
+    badge: null,
+  },
+];
