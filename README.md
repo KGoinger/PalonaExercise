@@ -1,25 +1,195 @@
-# PalonaExercise
+# Curator AI — AI Commerce Agent
 
-Next.js (App Router) prototype migration from the original single-file `code.html`.
+AI-powered shopping assistant for an athletic apparel store. Handles product recommendations, visual search, and general Q&A through a single AI agent with tool-use capability.
 
-## Stack
+---
 
-- Next.js `16.2.1`
-- React `19.2.4`
-- React DOM `19.2.4`
-- Tailwind CSS `3.4.x`
+## Features
 
-## Run
+| Feature | Description |
+|---------|-------------|
+| General Conversation | Ask the agent its name, capabilities, or general questions |
+| Text-Based Recommendations | "Recommend a running outfit" — searches the catalog and explains why each product fits |
+| Image-Based Search | Upload a photo to find visually similar products in the catalog |
+
+All three are handled by a single AI agent using tool-use (function calling).
+
+---
+
+## Tech Stack & Decisions
+
+| Layer | Choice | Why |
+|-------|--------|-----|
+| Framework | Next.js 16 (App Router) | Full-stack in one repo — React frontend + API routes as backend |
+| AI | Vercel AI SDK (provider-agnostic) | Unified AI SDK with built-in streaming, `useChat` hook, and tool calling. Provider swappable via env var (`AI_PROVIDER`/`AI_MODEL`) — Gemini for dev, any provider for prod |
+| Styling | Tailwind CSS 3.4 | Rapid UI development with Material Design 3 color tokens |
+| Product Catalog | In-memory JSON | Sufficient for a predefined catalog (~15 items). No database overhead |
+| Testing | Vitest | Fast, ESM-native test runner |
+
+---
+
+## Architecture
+
+```
+User → Next.js Frontend (useChat hook)
+              │
+              ▼  (streaming)
+         POST /api/chat → Vercel AI SDK (streamText)
+              │
+        ┌─────┴─────┐
+        ▼           ▼
+  search_products  get_product_details
+        │           │
+        └─────┬─────┘
+              ▼
+        Product Catalog (JSON)
+
+(AI_PROVIDER env var → Google/Anthropic/OpenAI)
+```
+
+The agent uses `streamText` with `maxSteps: 5` to support multi-turn tool calls in a single user request (e.g., search then fetch details). The frontend renders tool results as product cards via the `toolInvocations` array exposed by the `useChat` hook.
+
+---
+
+## Setup
+
+### Prerequisites
+
+- Node.js 18+
+- An AI provider API key (Google Gemini or Anthropic Claude)
+
+### Install & Run
 
 ```bash
 npm install
+```
+
+Create a `.env.local` file in the project root:
+
+```bash
+# Google Gemini (default)
+AI_PROVIDER=google
+AI_MODEL=gemini-2.0-flash
+GOOGLE_GENERATIVE_AI_API_KEY=your-google-api-key
+
+# -- OR -- Anthropic Claude
+# AI_PROVIDER=anthropic
+# AI_MODEL=claude-3-5-haiku-20241022
+# ANTHROPIC_API_KEY=your-anthropic-api-key
+```
+
+```bash
 npm run dev
 ```
 
-Open `http://localhost:3000`
+Open [http://localhost:3000](http://localhost:3000).
 
-## Routes
+### Switching Providers
 
-- `/` landing page
-- `/chat` chat UI prototype
-- `/product` product detail prototype
+Set `AI_PROVIDER` and `AI_MODEL` in `.env.local` and restart the dev server. Supported values for `AI_PROVIDER`: `google`, `anthropic`.
+
+---
+
+## API Documentation
+
+### POST /api/chat
+
+Chat endpoint using the Vercel AI SDK data stream protocol.
+
+- **Request body:** `{ messages: Message[] }` — Vercel AI SDK message format. Supports text and image content parts (for visual search via `useChat`).
+- **Response:** Streaming data stream (`toDataStreamResponse()`).
+- **Tools available to the agent:**
+
+| Tool | Parameters | Description |
+|------|-----------|-------------|
+| `search_products` | `query: string`, `category?: "tops"\|"bottoms"\|"shoes"\|"accessories"` | Full-text search across the product catalog |
+| `get_product_details` | `product_id: string` | Fetch full details for a specific product |
+
+- **Frontend:** Tool results are available as `toolInvocations` in each assistant message returned by `useChat`, allowing product cards to be rendered inline.
+
+---
+
+### GET /api/products
+
+Browse and search the product catalog.
+
+| Query Param | Type | Description |
+|-------------|------|-------------|
+| `q` | `string` | Full-text search (name, description, tags) |
+| `category` | `string` | Filter by category: `tops`, `bottoms`, `shoes`, `accessories` |
+
+**Response:**
+
+```json
+{
+  "products": [ /* Product[] */ ],
+  "categories": [ /* string[] */ ]
+}
+```
+
+---
+
+### GET /api/products/:id
+
+Fetch a single product by ID.
+
+**Response (200):**
+
+```json
+{ "product": { /* Product */ } }
+```
+
+**Response (404):**
+
+```json
+{ "error": "Product not found" }
+```
+
+---
+
+## Project Structure
+
+```
+├── app/
+│   ├── layout.js                    # Root layout with nav bars
+│   ├── page.js                      # Landing / home page
+│   ├── globals.css                  # Global styles & Tailwind base
+│   ├── chat/
+│   │   └── page.js                  # Chat UI — useChat hook, message rendering, image upload
+│   ├── product/
+│   │   ├── page.js                  # Product listing / browse page
+│   │   └── [id]/page.js             # Dynamic product detail page
+│   └── api/
+│       ├── chat/route.js            # POST /api/chat — AI agent streaming endpoint
+│       └── products/
+│           ├── route.js             # GET /api/products — search & list
+│           └── [id]/route.js        # GET /api/products/:id — single product
+├── components/
+│   ├── chat-message.js              # Renders assistant/user messages + product card tool results
+│   ├── product-card.js              # Product card UI component
+│   ├── image-upload-button.js       # Image upload button for visual search
+│   ├── product-ask-curator.js       # "Ask Curator" CTA on product detail page
+│   ├── top-nav-bar.js               # Top navigation bar
+│   └── bottom-nav-bar.js            # Bottom navigation bar
+├── lib/
+│   ├── agent.js                     # System prompt + agent tools (search_products, get_product_details)
+│   ├── catalog.js                   # searchProducts() and getProductById() helpers
+│   └── model.js                     # getModel() — reads AI_PROVIDER/AI_MODEL env vars
+├── data/
+│   └── products.js                  # In-memory product catalog (~15 items)
+├── tests/
+│   ├── api/products.test.js         # API route unit tests
+│   ├── lib/agent.test.js            # Agent tool unit tests
+│   └── lib/catalog.test.js          # Catalog search logic unit tests
+├── vitest.config.js                 # Vitest configuration
+├── tailwind.config.js               # Tailwind CSS configuration
+└── package.json
+```
+
+---
+
+## Run Tests
+
+```bash
+npm test
+```
