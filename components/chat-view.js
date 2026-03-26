@@ -24,7 +24,7 @@ export default function ChatView() {
 
   function onSubmit(e) {
     e.preventDefault();
-    if (!input.trim() && !pendingImage) return;
+    if (!(input || "").trim() && !pendingImage) return;
 
     const options = {};
     if (pendingImage) {
@@ -153,7 +153,7 @@ export default function ChatView() {
                 <div className="flex items-center gap-2 pr-2">
                   <button
                     type="submit"
-                    disabled={isLoading || (!input.trim() && !pendingImage)}
+                    disabled={isLoading || (!(input || "").trim() && !pendingImage)}
                     className="flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-primary-container text-white shadow-lg shadow-primary/25 transition-transform active:scale-90 disabled:opacity-50"
                   >
                     <span className="material-symbols-outlined">arrow_upward</span>
