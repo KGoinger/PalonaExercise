@@ -50,17 +50,25 @@ function sanitizeMessages(messages) {
 }
 
 export async function POST(request) {
-  const { messages = [], currentProductId } = await request.json();
-  const sanitizedMessages = sanitizeMessages(messages);
-  const currentProduct = currentProductId ? getProductById(currentProductId) : undefined;
+  try {
+    const { messages = [], currentProductId } = await request.json();
+    const sanitizedMessages = sanitizeMessages(messages);
+    const currentProduct = currentProductId ? getProductById(currentProductId) : undefined;
 
-  const result = streamText({
-    model: getModel(),
-    system: buildSystemPrompt({ currentProduct }),
-    messages: await convertToModelMessages(sanitizedMessages),
-    tools: buildAgentTools({ currentProduct }),
-    stopWhen: stepCountIs(5),
-  });
+    const result = streamText({
+      model: getModel(),
+      system: buildSystemPrompt({ currentProduct }),
+      messages: await convertToModelMessages(sanitizedMessages),
+      tools: buildAgentTools({ currentProduct }),
+      stopWhen: stepCountIs(5),
+    });
 
-  return result.toUIMessageStreamResponse();
+    return result.toUIMessageStreamResponse();
+  } catch (error) {
+    console.error("[/api/chat]", error);
+    return new Response(JSON.stringify({ error: error.message }), {
+      status: 500,
+      headers: { "Content-Type": "application/json" },
+    });
+  }
 }
