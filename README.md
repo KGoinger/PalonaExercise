@@ -2,7 +2,7 @@
 
 AI-powered shopping assistant for an athletic apparel store. Handles product recommendations, visual search, and general Q&A through a single AI agent with tool-use capability.
 
-**Live demo:** https://palona-exercise-dr02vhhsl-axs-projects-58cda411.vercel.app
+**Live demo:** https://palona-exercise.vercel.app
 
 ---
 
@@ -23,7 +23,7 @@ All three are handled by a single AI agent using tool-use (function calling).
 | Layer | Choice | Why |
 |-------|--------|-----|
 | Framework | Next.js 16 (App Router) | Full-stack in one repo — React frontend + API routes as backend |
-| AI | Vercel AI SDK (provider-agnostic) | Unified AI SDK with built-in streaming, `useChat` hook, and tool calling. Provider swappable via env var (`AI_PROVIDER`/`AI_MODEL`) — Gemini for dev, any provider for prod |
+| AI | Vercel AI SDK | Unified AI SDK with built-in streaming, `useChat` hook, and tool calling. Provider swappable via env var (`AI_PROVIDER`/`AI_MODEL`) between Google Gemini and Anthropic Claude |
 | Styling | Tailwind CSS 3.4 | Rapid UI development with Material Design 3 color tokens |
 | Product Catalog | In-memory JSON | Sufficient for a predefined catalog (~15 items). No database overhead |
 | Testing | Vitest | Fast, ESM-native test runner |
@@ -46,10 +46,10 @@ User → Next.js Frontend (useChat hook)
               ▼
         Product Catalog (JSON)
 
-(AI_PROVIDER env var → Google/Anthropic/OpenAI)
+(AI_PROVIDER env var → Google/Anthropic)
 ```
 
-The agent uses `streamText` with `maxSteps: 5` to support multi-turn tool calls in a single user request (e.g., search then fetch details). The frontend renders tool results as product cards via the `toolInvocations` array exposed by the `useChat` hook.
+The agent uses `streamText` with `stopWhen: stepCountIs(5)` to support multi-step tool use in a single user request (e.g., search then fetch details). The frontend renders tool results as product cards from assistant `message.parts`, including streamed tool output parts emitted by the Vercel AI SDK UI message protocol.
 
 ---
 
@@ -96,10 +96,12 @@ Set `AI_PROVIDER` and `AI_MODEL` in `.env.local` and restart the dev server. Sup
 
 ### POST /api/chat
 
-Chat endpoint using the Vercel AI SDK data stream protocol.
+Chat endpoint using the Vercel AI SDK UI message stream protocol.
 
-- **Request body:** `{ messages: Message[] }` — Vercel AI SDK message format. Supports text and image content parts (for visual search via `useChat`).
-- **Response:** Streaming data stream (`toDataStreamResponse()`).
+- **Request body:** `{ messages: UIMessage[], currentProductId?: string }`
+- **Message format:** Vercel AI SDK UI message format. Supports text parts and image file parts. The frontend sends uploaded images as base64 file content, which the API normalizes before passing to the model.
+- **Product-page context:** `currentProductId` is optional and is used by the embedded product-page assistant to ground comparisons against the currently viewed product.
+- **Response:** Streaming UI message response (`toUIMessageStreamResponse()`).
 - **Tools available to the agent:**
 
 | Tool | Parameters | Description |
@@ -107,7 +109,7 @@ Chat endpoint using the Vercel AI SDK data stream protocol.
 | `search_products` | `query: string`, `category?: "tops"\|"bottoms"\|"shoes"\|"accessories"` | Full-text search across the product catalog |
 | `get_product_details` | `product_id: string` | Fetch full details for a specific product |
 
-- **Frontend:** Tool results are available as `toolInvocations` in each assistant message returned by `useChat`, allowing product cards to be rendered inline.
+- **Frontend:** Tool results are rendered from assistant `message.parts` and displayed inline as product cards.
 
 ---
 
@@ -182,13 +184,14 @@ Fetch a single product by ID.
 │   ├── agent.js                     # System prompt + agent tools (search_products, get_product_details)
 │   ├── catalog.js                   # searchProducts(), getProductById(), inferCategoryFromText()
 │   ├── model.js                     # getModel() — reads AI_PROVIDER/AI_MODEL env vars
-│   ├── chat-products.js             # Extracts & deduplicates product cards from tool invocations
+│   ├── chat-products.js             # Extracts & deduplicates product cards from assistant message parts
 │   ├── chat-display.js              # sanitizeAssistantDisplayText() — strips UI-only lines from output
 │   └── chat-message-state.js        # Streaming state helpers (thinking detection, active message ID)
 ├── data/
 │   ├── products.js                  # In-memory product catalog (~15 items)
 │   └── cases/                       # Pre-recorded conversation data for demo case pages
 ├── tests/
+│   ├── api/chat.test.js             # Chat route unit tests
 │   ├── api/products.test.js         # API route unit tests
 │   ├── lib/agent.test.js            # Agent tool unit tests
 │   ├── lib/catalog.test.js          # Catalog search logic unit tests
