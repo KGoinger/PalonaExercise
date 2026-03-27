@@ -10,7 +10,7 @@ export default function ProductCard({
   return (
     <div
       className={[
-        "group flex h-full w-full flex-col overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-lowest transition-all duration-300 hover:bg-surface-bright",
+        "group flex h-full flex-col overflow-hidden rounded-xl border border-outline-variant/10 bg-surface-container-lowest transition-all duration-300 hover:bg-surface-bright",
         className,
       ]
         .filter(Boolean)
