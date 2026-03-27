@@ -73,11 +73,6 @@ Create a `.env.local` file in the project root:
 AI_PROVIDER=google
 AI_MODEL=gemini-3-flash-preview
 GOOGLE_GENERATIVE_AI_API_KEY=your-google-api-key
-
-# -- OR -- Anthropic Claude
-# AI_PROVIDER=anthropic
-# AI_MODEL=claude-3-5-haiku-20241022
-# ANTHROPIC_API_KEY=your-anthropic-api-key
 ```
 
 ```bash
