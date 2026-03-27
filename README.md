@@ -71,7 +71,7 @@ Create a `.env.local` file in the project root:
 ```bash
 # Google Gemini (default)
 AI_PROVIDER=google
-AI_MODEL=gemini-2.0-flash
+AI_MODEL=gemini-3-flash-preview
 GOOGLE_GENERATIVE_AI_API_KEY=your-google-api-key
 
 # -- OR -- Anthropic Claude

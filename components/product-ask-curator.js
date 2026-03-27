@@ -31,10 +31,6 @@ function getPreviousUserContext(messages, index) {
   return { text: "", hasImage: false };
 }
 
-function getToolProducts(message, text) {
-  return extractProductCardsFromParts(message.parts || [], text);
-}
-
 function isComparisonIntent(text) {
   return /(compare|difference|different|vs|versus|trade[- ]?off|better)/i.test(
     text || ""
@@ -53,20 +49,6 @@ function filterProductsForCurrentContext(products, options = {}) {
   }
 
   return products;
-}
-
-function getFallbackRecommendationText(products, options = {}) {
-  const { currentProduct, userQuestion, hasImage } = options;
-
-  if (!products.length) {
-    return "";
-  }
-
-  if (currentProduct && (isComparisonIntent(userQuestion) || hasImage)) {
-    return "";
-  }
-
-  return "";
 }
 
 export default function ProductAskCurator({ product }) {
@@ -167,7 +149,7 @@ export default function ProductAskCurator({ product }) {
               : { text: "", hasImage: false };
           const rawToolProducts =
             message.role === "assistant" && !isStreamingMessage && text.trim()
-              ? getToolProducts(message, text)
+              ? extractProductCardsFromParts(message.parts || [], text)
               : [];
           const toolProducts =
             message.role === "assistant"
@@ -225,16 +207,7 @@ export default function ProductAskCurator({ product }) {
                         </span>
                       </div>
                     ) : (
-                      <MarkdownContent
-                        content={
-                          displayText ||
-                          getFallbackRecommendationText(toolProducts, {
-                            currentProduct: product,
-                            userQuestion: userContext.text,
-                            hasImage: userContext.hasImage,
-                          })
-                        }
-                      />
+                      <MarkdownContent content={displayText} />
                     )}
                   </div>
                 </div>

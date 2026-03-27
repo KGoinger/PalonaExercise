@@ -23,7 +23,6 @@ function ChatMessage({ message, isStreaming = false }) {
     return `data:${file.mediaType};base64,${file.url}`;
   };
   if (message.role === "user") {
-    // Extract text and file parts from the message
     const textParts = parts.filter((p) => p.type === "text");
     const fileParts = parts.filter((p) => p.type === "file");
     const textContent = textParts.map((p) => p.text).join("") || "";
@@ -48,7 +47,6 @@ function ChatMessage({ message, isStreaming = false }) {
     );
   }
 
-  // Assistant message — extract text and tool results from parts
   const textContent = parts
     .filter((p) => p.type === "text")
     .map((p) => p.text)
