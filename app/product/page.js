@@ -1,11 +1,10 @@
 import TopNavBar from "../../components/top-nav-bar";
 import BottomNavBar from "../../components/bottom-nav-bar";
 import ProductCard from "../../components/product-card";
-import { searchProducts, getCategories } from "@/lib/catalog";
+import { searchProducts } from "@/lib/catalog";
 
 export default function ProductPage() {
   const products = searchProducts();
-  const categories = getCategories();
 
   return (
     <div className="min-h-screen bg-surface">
@@ -18,17 +17,6 @@ export default function ProductPage() {
           <p className="max-w-2xl text-on-surface-variant">
             Explore performance essentials selected by Curator AI.
           </p>
-        </section>
-
-        <section className="mb-8 flex flex-wrap gap-2">
-          {categories.map((category) => (
-            <span
-              key={category}
-              className="rounded-full border border-outline-variant/25 bg-surface-container-low px-3 py-1 text-xs font-semibold uppercase tracking-wide text-on-surface-variant"
-            >
-              {category}
-            </span>
-          ))}
         </section>
 
         <section className="grid grid-cols-1 gap-6 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">

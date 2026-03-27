@@ -25,15 +25,19 @@ export default function LandingPage() {
               Commerce Website
             </span>
           </h1>
-          <p className="mx-auto max-w-2xl font-body text-lg text-on-surface-variant md:text-xl">
-            One unified assistant for general conversation, text-based product
-            recommendation, and image-based product search over a predefined
-            catalog.
+          <p className="mx-auto max-w-5xl font-body text-lg text-on-surface-variant md:text-xl">
+            <span className="md:block">
+              One unified assistant for general conversation, text-based product
+            </span>
+            <span className="md:block">
+              recommendation, and image-based product search over a predefined
+              catalog.
+            </span>
           </p>
         </section>
 
-        <section className="mb-16 grid w-full grid-cols-1 gap-6 md:auto-rows-fr md:grid-cols-3">
-          <div className="landing-feature-card landing-reveal group relative flex h-full min-h-[320px] flex-col justify-between overflow-hidden rounded-[2rem] p-8 md:col-span-2">
+        <section className="mb-16 grid w-full grid-cols-1 gap-6 md:auto-rows-fr md:grid-cols-2">
+          <div className="landing-feature-card landing-reveal group relative flex h-full min-h-[320px] flex-col justify-between overflow-hidden rounded-[2rem] p-8">
             <div className="pointer-events-none absolute -right-16 -top-16 h-56 w-56 rounded-full bg-primary/10 blur-3xl" />
             <div className="pointer-events-none absolute -bottom-20 -left-12 h-48 w-48 rounded-full bg-white/60 blur-2xl" />
             <div className="relative z-10">
@@ -49,9 +53,9 @@ export default function LandingPage() {
                 Conversational Stylist
               </h3>
               <p className="max-w-sm font-body leading-relaxed text-on-surface-variant">
-                Just describe what you're looking for. "I need an outfit for a
-                summer wedding in Tuscany" or "Find me jeans that fit like my
-                favorite vintage pair."
+                Just describe what you're looking for, and Curator AI will help
+                you narrow it down. For example: "Recommend me a t-shirt for
+                sports."
               </p>
             </div>
             <div className="pointer-events-none absolute bottom-[-12px] right-[-12px] opacity-[0.08] transition-opacity duration-500 group-hover:opacity-[0.16]">
@@ -88,6 +92,15 @@ export default function LandingPage() {
           >
             Start Chatting
             <span className="material-symbols-outlined">arrow_forward</span>
+          </Link>
+          <Link
+            href="/case/001"
+            className="group flex w-full items-center justify-center gap-2 rounded-2xl border border-primary/30 bg-primary/10 px-8 py-4 text-base font-bold text-primary shadow-sm transition-all hover:-translate-y-0.5 hover:bg-primary/15 hover:shadow-md"
+          >
+            Open Feature Walkthrough
+            <span className="material-symbols-outlined text-[20px] transition-transform group-hover:translate-x-0.5">
+              play_circle
+            </span>
           </Link>
           <p className="text-sm font-medium text-on-surface-variant">
             No subscription required. Always free to use.

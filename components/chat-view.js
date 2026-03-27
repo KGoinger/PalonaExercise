@@ -1,12 +1,13 @@
 "use client";
 
-import { useRef, useEffect, useState } from "react";
+import { useRef, useEffect, useState, useMemo } from "react";
 import { useChat } from "@ai-sdk/react";
 import { DefaultChatTransport } from "ai";
 import TopNavBar from "./top-nav-bar";
 import BottomNavBar from "./bottom-nav-bar";
 import ChatMessage from "./chat-message";
 import ImageUploadButton from "./image-upload-button";
+import { getStreamingAssistantId } from "@/lib/chat-message-state";
 
 export default function ChatView() {
   const [input, setInput] = useState("");
@@ -20,11 +21,19 @@ export default function ChatView() {
   });
 
   const isLoading = status === "submitted" || status === "streaming";
+  const streamingAssistantId = useMemo(
+    () => getStreamingAssistantId(messages, status),
+    [messages, status]
+  );
+  const latestMessage = messages[messages.length - 1];
 
   // Scroll to bottom on new messages
   useEffect(() => {
-    messagesEndRef.current?.scrollIntoView({ behavior: "smooth" });
-  }, [messages]);
+    if (!messages.length) return;
+    messagesEndRef.current?.scrollIntoView({
+      behavior: status === "streaming" ? "auto" : "smooth",
+    });
+  }, [messages.length, latestMessage?.id, status]);
 
   function onSubmit(e) {
     e.preventDefault();
@@ -82,6 +91,9 @@ export default function ChatView() {
                 I can help you find the perfect gear. Describe what you're looking
                 for, or upload an image to find matching products.
               </p>
+              <p className="text-sm font-medium text-on-surface-variant/80">
+                Please note: chat history is not saved.
+              </p>
               <div className="flex flex-wrap justify-center gap-2 pt-4">
                 {[
                   "Recommend a running outfit",
@@ -101,7 +113,11 @@ export default function ChatView() {
           )}
 
           {messages.map((msg) => (
-            <ChatMessage key={msg.id} message={msg} />
+            <ChatMessage
+              key={msg.id}
+              message={msg}
+              isStreaming={msg.id === streamingAssistantId}
+            />
           ))}
 
           {isLoading && messages[messages.length - 1]?.role === "user" && (

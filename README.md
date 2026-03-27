@@ -159,28 +159,40 @@ Fetch a single product by ID.
 │   ├── product/
 │   │   ├── page.js                  # Product listing / browse page
 │   │   └── [id]/page.js             # Dynamic product detail page
+│   ├── case/
+│   │   └── 001/page.js              # Demo case — pre-recorded conversation walkthrough
 │   └── api/
 │       ├── chat/route.js            # POST /api/chat — AI agent streaming endpoint
 │       └── products/
 │           ├── route.js             # GET /api/products — search & list
 │           └── [id]/route.js        # GET /api/products/:id — single product
 ├── components/
+│   ├── chat-view.js                 # Main chat UI — message state, form submission, image upload, default prompts
 │   ├── chat-message.js              # Renders assistant/user messages + product card tool results
-│   ├── product-card.js              # Product card UI component
-│   ├── image-upload-button.js       # Image upload button for visual search
-│   ├── product-ask-curator.js       # "Ask Curator" CTA on product detail page
+│   ├── product-card.js              # Product card UI (default and compact variants)
+│   ├── image-upload-button.js       # Image upload button for visual search (base64 conversion)
+│   ├── product-ask-curator.js       # Embedded chat widget on product detail pages
+│   ├── markdown-content.js          # Markdown renderer (react-markdown + remark-gfm)
+│   ├── site-disclaimer.js           # Footer disclaimer (hidden on /chat)
 │   ├── top-nav-bar.js               # Top navigation bar
-│   └── bottom-nav-bar.js            # Bottom navigation bar
+│   └── bottom-nav-bar.js            # Mobile bottom navigation bar
 ├── lib/
 │   ├── agent.js                     # System prompt + agent tools (search_products, get_product_details)
-│   ├── catalog.js                   # searchProducts() and getProductById() helpers
-│   └── model.js                     # getModel() — reads AI_PROVIDER/AI_MODEL env vars
+│   ├── catalog.js                   # searchProducts(), getProductById(), inferCategoryFromText()
+│   ├── model.js                     # getModel() — reads AI_PROVIDER/AI_MODEL env vars
+│   ├── chat-products.js             # Extracts & deduplicates product cards from tool invocations
+│   ├── chat-display.js              # sanitizeAssistantDisplayText() — strips UI-only lines from output
+│   └── chat-message-state.js        # Streaming state helpers (thinking detection, active message ID)
 ├── data/
-│   └── products.js                  # In-memory product catalog (~15 items)
+│   ├── products.js                  # In-memory product catalog (~15 items)
+│   └── cases/                       # Pre-recorded conversation data for demo case pages
 ├── tests/
 │   ├── api/products.test.js         # API route unit tests
 │   ├── lib/agent.test.js            # Agent tool unit tests
-│   └── lib/catalog.test.js          # Catalog search logic unit tests
+│   ├── lib/catalog.test.js          # Catalog search logic unit tests
+│   ├── lib/chat-products.test.js    # Product card extraction unit tests
+│   ├── lib/chat-display.test.js     # Message sanitization unit tests
+│   └── lib/chat-message-state.test.js  # Streaming state detection unit tests
 ├── vitest.config.js                 # Vitest configuration
 ├── tailwind.config.js               # Tailwind CSS configuration
 └── package.json

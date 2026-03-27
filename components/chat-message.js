@@ -1,11 +1,13 @@
 "use client";
 
+import { memo } from "react";
 import ProductCard from "./product-card";
 import MarkdownContent from "./markdown-content";
 import { extractProductCardsFromParts } from "@/lib/chat-products";
 import { isAssistantMessageThinking } from "@/lib/chat-message-state";
+import { sanitizeAssistantDisplayText } from "@/lib/chat-display";
 
-export default function ChatMessage({ message }) {
+function ChatMessage({ message, isStreaming = false }) {
   const parts = message.parts || [];
   const resolveFileSource = (file) => {
     if (!file?.url) return "";
@@ -51,11 +53,15 @@ export default function ChatMessage({ message }) {
     .filter((p) => p.type === "text")
     .map((p) => p.text)
     .join("");
+  const displayText = sanitizeAssistantDisplayText(textContent);
 
   const showThinkingState = isAssistantMessageThinking(parts, textContent);
-  const toolProducts = extractProductCardsFromParts(parts, textContent);
+  const toolProducts =
+    !isStreaming && textContent.trim().length > 0
+      ? extractProductCardsFromParts(parts, textContent)
+      : [];
   const hasVisibleContent =
-    showThinkingState || textContent.trim().length > 0 || toolProducts.length > 0;
+    showThinkingState || displayText.trim().length > 0 || toolProducts.length > 0;
 
   if (!hasVisibleContent) {
     return null;
@@ -95,9 +101,9 @@ export default function ChatMessage({ message }) {
           </div>
         )}
 
-        {textContent.trim().length > 0 && (
+        {displayText.trim().length > 0 && (
           <MarkdownContent
-            content={textContent}
+            content={displayText}
             className="text-lg text-on-surface"
           />
         )}
@@ -108,7 +114,8 @@ export default function ChatMessage({ message }) {
               <ProductCard
                 key={product.id}
                 product={product}
-                className="w-[220px] shrink-0"
+                variant="compact"
+                className="w-[156px] shrink-0"
               />
             ))}
           </div>
@@ -117,3 +124,5 @@ export default function ChatMessage({ message }) {
     </div>
   );
 }
+
+export default memo(ChatMessage);

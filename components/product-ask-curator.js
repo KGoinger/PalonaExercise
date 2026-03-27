@@ -7,7 +7,11 @@ import ProductCard from "./product-card";
 import MarkdownContent from "./markdown-content";
 import ImageUploadButton from "./image-upload-button";
 import { extractProductCardsFromParts } from "@/lib/chat-products";
-import { isAssistantMessageThinking } from "@/lib/chat-message-state";
+import {
+  getStreamingAssistantId,
+  isAssistantMessageThinking,
+} from "@/lib/chat-message-state";
+import { sanitizeAssistantDisplayText } from "@/lib/chat-display";
 
 function getMessageText(message) {
   return (message.parts || [])
@@ -81,6 +85,10 @@ export default function ProductAskCurator({ product }) {
   }, []);
 
   const isLoading = status === "submitted" || status === "streaming";
+  const streamingAssistantId = useMemo(
+    () => getStreamingAssistantId(messages, status),
+    [messages, status]
+  );
   const suggestions = useMemo(
     () => [
       `Is ${product?.name || "this product"} moisture-wicking?`,
@@ -150,13 +158,17 @@ export default function ProductAskCurator({ product }) {
       <div className="hide-scrollbar max-h-[26rem] space-y-4 overflow-y-auto pr-1">
         {messages.map((message, index) => {
           const text = getMessageText(message);
+          const displayText = sanitizeAssistantDisplayText(text);
+          const isStreamingMessage = message.id === streamingAssistantId;
           const files = (message.parts || []).filter((part) => part.type === "file");
           const userContext =
             message.role === "assistant"
               ? getPreviousUserContext(messages, index)
               : { text: "", hasImage: false };
           const rawToolProducts =
-            message.role === "assistant" ? getToolProducts(message, text) : [];
+            message.role === "assistant" && !isStreamingMessage && text.trim()
+              ? getToolProducts(message, text)
+              : [];
           const toolProducts =
             message.role === "assistant"
               ? filterProductsForCurrentContext(rawToolProducts, {
@@ -200,7 +212,7 @@ export default function ProductAskCurator({ product }) {
 
           return (
             <div key={message.id} className="space-y-3">
-              {(showThinkingState || text || toolProducts.length === 0) && (
+              {(showThinkingState || displayText || toolProducts.length === 0) && (
                 <div className="flex justify-start">
                   <div className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm">
                     {showThinkingState ? (
@@ -215,7 +227,7 @@ export default function ProductAskCurator({ product }) {
                     ) : (
                       <MarkdownContent
                         content={
-                          text ||
+                          displayText ||
                           getFallbackRecommendationText(toolProducts, {
                             currentProduct: product,
                             userQuestion: userContext.text,
@@ -228,13 +240,14 @@ export default function ProductAskCurator({ product }) {
                 </div>
               )}
 
-              {!showThinkingState && toolProducts.length > 0 && (
+              {!showThinkingState && !isStreamingMessage && toolProducts.length > 0 && (
                 <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 hide-scrollbar">
                   {toolProducts.map((candidate) => (
                     <ProductCard
                       key={candidate.id}
                       product={candidate}
-                      className="w-[220px] shrink-0"
+                      variant="compact"
+                      className="w-[156px] shrink-0"
                     />
                   ))}
                 </div>
