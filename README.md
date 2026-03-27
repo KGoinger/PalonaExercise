@@ -2,6 +2,8 @@
 
 AI-powered shopping assistant for an athletic apparel store. Handles product recommendations, visual search, and general Q&A through a single AI agent with tool-use capability.
 
+**Live demo:** https://palona-exercise-dr02vhhsl-axs-projects-58cda411.vercel.app
+
 ---
 
 ## Features
