@@ -1,4 +1,4 @@
-import { convertToModelMessages, streamText } from "ai";
+import { convertToModelMessages, stepCountIs, streamText } from "ai";
 import { getModel } from "@/lib/model";
 import { buildSystemPrompt, buildAgentTools } from "@/lib/agent";
 import { getProductById } from "@/lib/catalog";
@@ -59,7 +59,7 @@ export async function POST(request) {
     system: buildSystemPrompt({ currentProduct }),
     messages: await convertToModelMessages(sanitizedMessages),
     tools: buildAgentTools({ currentProduct }),
-    maxSteps: 5,
+    stopWhen: stepCountIs(5),
   });
 
   return result.toUIMessageStreamResponse();

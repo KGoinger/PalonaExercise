@@ -6,6 +6,8 @@ import { DefaultChatTransport } from "ai";
 import ProductCard from "./product-card";
 import MarkdownContent from "./markdown-content";
 import ImageUploadButton from "./image-upload-button";
+import { extractProductCardsFromParts } from "@/lib/chat-products";
+import { isAssistantMessageThinking } from "@/lib/chat-message-state";
 
 function getMessageText(message) {
   return (message.parts || [])
@@ -25,67 +27,8 @@ function getPreviousUserContext(messages, index) {
   return { text: "", hasImage: false };
 }
 
-function dedupeProductsById(products) {
-  const seen = new Set();
-  return products.filter((product) => {
-    if (!product?.id) return true;
-    if (seen.has(product.id)) return false;
-    seen.add(product.id);
-    return true;
-  });
-}
-
-function getToolProducts(message) {
-  const toolParts = (message.parts || []).filter(
-    (part) =>
-      part.type === "tool-search_products" &&
-      part.state === "output-available" &&
-      Array.isArray(part.output?.products)
-  );
-
-  if (!toolParts.length) return [];
-
-  const partsWithProducts = toolParts.filter(
-    (part) => (part.output?.products || []).length > 0
-  );
-
-  if (!partsWithProducts.length) return [];
-
-  const withCategory = partsWithProducts.filter(
-    (part) =>
-      typeof part.output?.appliedCategory === "string" &&
-      part.output.appliedCategory.length > 0
-  );
-
-  const candidatePool = withCategory.length > 0 ? withCategory : partsWithProducts;
-
-  const preferredPart = candidatePool.reduce((best, current) => {
-    const bestLen = (best.output?.products || []).length;
-    const currentLen = (current.output?.products || []).length;
-    return currentLen < bestLen ? current : best;
-  }, candidatePool[0]);
-
-  const preferredProducts = dedupeProductsById(preferredPart.output?.products || []);
-  const hasCategory =
-    typeof preferredPart.output?.appliedCategory === "string" &&
-    preferredPart.output.appliedCategory.length > 0;
-
-  if (!hasCategory && preferredProducts.length >= 10) {
-    return [];
-  }
-
-  return preferredProducts;
-}
-
-function formatPrice(price) {
-  return typeof price === "number" ? `$${price.toFixed(2)}` : "N/A";
-}
-
-function summarizeProduct(product) {
-  const raw = (product?.description || "").replace(/\s+/g, " ").trim();
-  if (!raw) return "General performance option from the catalog.";
-  const sentence = raw.split(".").find((part) => part.trim().length > 0)?.trim() || raw;
-  return sentence.endsWith(".") ? sentence : `${sentence}.`;
+function getToolProducts(message, text) {
+  return extractProductCardsFromParts(message.parts || [], text);
 }
 
 function isComparisonIntent(text) {
@@ -112,63 +55,14 @@ function getFallbackRecommendationText(products, options = {}) {
   const { currentProduct, userQuestion, hasImage } = options;
 
   if (!products.length) {
-    return "I couldn't confidently map this image to catalog items yet. Please try a more specific prompt such as \"find similar running tees\" or \"show tops like this\".";
+    return "";
   }
 
   if (currentProduct && (isComparisonIntent(userQuestion) || hasImage)) {
-    const alternatives = products
-      .filter((product) => product.id !== currentProduct.id)
-      .slice(0, 3);
-
-    if (alternatives.length > 0) {
-      const lines = [
-        hasImage
-          ? `I analyzed your image against **${currentProduct.name}** (${formatPrice(
-              currentProduct.price
-            )}) and compared it with similar options in the same category:`
-          : `I compared **${currentProduct.name}** (${formatPrice(
-              currentProduct.price
-            )}) with similar options from the catalog:`,
-        "",
-      ];
-
-      alternatives.forEach((candidate, index) => {
-        const priceDiff =
-          typeof candidate.price === "number" &&
-          typeof currentProduct.price === "number"
-            ? candidate.price - currentProduct.price
-            : null;
-
-        const priceDiffText =
-          priceDiff === null
-            ? "Price difference unavailable."
-            : priceDiff === 0
-            ? "Same price."
-            : priceDiff > 0
-            ? `${formatPrice(priceDiff)} more expensive.`
-            : `${formatPrice(Math.abs(priceDiff))} cheaper.`;
-
-        lines.push(`${index + 1}. **${candidate.name}** (${formatPrice(candidate.price)})`);
-        lines.push(`- Material/Fit profile: ${summarizeProduct(candidate)}`);
-        lines.push(`- Compared with **${currentProduct.name}**: ${priceDiffText}`);
-      });
-
-      lines.push(
-        "",
-        "If you want, I can narrow this down by priority: breathability, warmth, fit, or budget."
-      );
-      return lines.join("\n");
-    }
+    return "";
   }
 
-  const top = products.slice(0, 3);
-  const lines = [`I found **${products.length}** relevant options. Top matches:`, ""];
-  top.forEach((candidate, index) => {
-    lines.push(`${index + 1}. **${candidate.name}** (${formatPrice(candidate.price)})`);
-    lines.push(`- ${summarizeProduct(candidate)}`);
-  });
-  lines.push("", "Tell me your fit and budget preference and I can refine further.");
-  return lines.join("\n");
+  return "";
 }
 
 export default function ProductAskCurator({ product }) {
@@ -262,7 +156,7 @@ export default function ProductAskCurator({ product }) {
               ? getPreviousUserContext(messages, index)
               : { text: "", hasImage: false };
           const rawToolProducts =
-            message.role === "assistant" ? getToolProducts(message) : [];
+            message.role === "assistant" ? getToolProducts(message, text) : [];
           const toolProducts =
             message.role === "assistant"
               ? filterProductsForCurrentContext(rawToolProducts, {
@@ -271,6 +165,10 @@ export default function ProductAskCurator({ product }) {
                   hasImage: userContext.hasImage,
                 })
               : [];
+          const showThinkingState =
+            message.role === "assistant"
+              ? isAssistantMessageThinking(message.parts || [], text)
+              : false;
 
           if (message.role === "user") {
             return (
@@ -302,24 +200,42 @@ export default function ProductAskCurator({ product }) {
 
           return (
             <div key={message.id} className="space-y-3">
-              <div className="flex justify-start">
-                <MarkdownContent
-                  content={
-                    text ||
-                    getFallbackRecommendationText(toolProducts, {
-                      currentProduct: product,
-                      userQuestion: userContext.text,
-                      hasImage: userContext.hasImage,
-                    })
-                  }
-                  className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm"
-                />
-              </div>
+              {(showThinkingState || text || toolProducts.length === 0) && (
+                <div className="flex justify-start">
+                  <div className="max-w-[88%] rounded-xl rounded-bl-sm border border-surface-variant/50 bg-surface-container-lowest px-4 py-2.5 text-sm font-body text-on-surface shadow-sm">
+                    {showThinkingState ? (
+                      <div className="flex items-center gap-2 text-on-surface-variant">
+                        <span className="material-symbols-outlined animate-spin text-base">
+                          progress_activity
+                        </span>
+                        <span className="text-xs font-semibold">
+                          Curator AI is thinking...
+                        </span>
+                      </div>
+                    ) : (
+                      <MarkdownContent
+                        content={
+                          text ||
+                          getFallbackRecommendationText(toolProducts, {
+                            currentProduct: product,
+                            userQuestion: userContext.text,
+                            hasImage: userContext.hasImage,
+                          })
+                        }
+                      />
+                    )}
+                  </div>
+                </div>
+              )}
 
-              {toolProducts.length > 0 && (
+              {!showThinkingState && toolProducts.length > 0 && (
                 <div className="-mx-1 flex gap-3 overflow-x-auto px-1 pb-2 hide-scrollbar">
                   {toolProducts.map((candidate) => (
-                    <ProductCard key={candidate.id} product={candidate} />
+                    <ProductCard
+                      key={candidate.id}
+                      product={candidate}
+                      className="w-[220px] shrink-0"
+                    />
                   ))}
                 </div>
               )}
